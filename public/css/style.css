@@ -337,8 +337,8 @@ body {
   transition: var(--transition);
 }
 .vehicle-card.active .vehicle-avatar { border-color: var(--accent); box-shadow: 0 0 16px rgba(99,102,241,0.2); }
-.vehicle-info { flex: 1; min-width: 0; }
-.vehicle-name { font-weight: 600; font-size: 14px; }
+.vehicle-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.vehicle-name { font-weight: 600; font-size: 14px; line-height: 1.3; }
 .vehicle-meta { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .vehicle-status {
   font-size: 10px; font-weight: 600; padding: 3px 10px;

@@ -9,7 +9,7 @@ class Tracker {
 
   start() {
     if (!navigator.geolocation) {
-      alert('Geolocation not supported by your browser');
+      alert('Geolokasi tidak didukung browser Anda');
       return false;
     }
     this.active = true;

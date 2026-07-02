@@ -1,7 +1,7 @@
 {
-  "name": "FleetTrack - Vehicle Monitor",
-  "short_name": "FleetTrack",
-  "description": "Real-time vehicle GPS tracking and trip monitoring",
+  "name": "RuteMu - Monitoring Kendaraan",
+  "short_name": "RuteMu",
+  "description": "Pelacakan GPS kendaraan dan monitoring trip real-time",
   "start_url": "/index.html?source=pwa",
   "display": "standalone",
   "background_color": "#0a0e1a",
@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "scope": "/",
   "categories": ["navigation", "utilities", "transportation"],
-  "lang": "en-US",
+  "lang": "id-ID",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",

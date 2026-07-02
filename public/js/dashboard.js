@@ -49,7 +49,7 @@ class Dashboard {
     el.innerHTML = trips.map(t => {
       const dur = t.end_time
         ? this._formatDuration(new Date(t.start_time), new Date(t.end_time))
-        : '<span style="color:var(--success)">In progress...</span>';
+        : '<span style="color:var(--success)">Sedang berlangsung...</span>';
       const date = new Date(t.start_time).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       return `<div class="trip-card" data-id="${t.id}">
         <div class="trip-left">

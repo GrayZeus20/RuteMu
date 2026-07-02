@@ -72,7 +72,7 @@ class MapManager {
           <div style="font-weight:700;font-size:13px;margin-bottom:4px;">${label}</div>
           <div style="font-size:11px;color:#64748b;">
             ${lat.toFixed(4)}, ${lng.toFixed(4)}<br>
-            ${speedText ? 'Speed: ' + speedText : ''}
+            ${speedText ? 'Kecepatan: ' + speedText : ''}
           </div>
         </div>`;
       marker.bindPopup(popupHtml);

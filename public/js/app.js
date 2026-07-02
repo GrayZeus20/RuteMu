@@ -112,7 +112,7 @@ const App = {
         <div class="vehicle-avatar" style="background:${v.color || '#6366f1'};color:white;font-weight:700;font-size:16px;">${initial}</div>
         <div class="vehicle-info">
           <div class="vehicle-name">${this._escapeHtml(v.name)}</div>
-          <div class="vehicle-meta">ID: ${v.id.slice(0, 8)}</div>
+          <div class="vehicle-meta">${v.id.slice(0, 8)}</div>
         </div>
         <div class="vehicle-status offline" id="status-${v.id}">offline</div>
         <button class="btn-delete-vehicle" data-id="${v.id}" title="Delete vehicle">
@@ -138,7 +138,7 @@ const App = {
 
   _selectVehicle(vehicleId) {
     if (this.trackingActive) {
-      this.toast('Stop current trip before switching vehicle', 'warning');
+      this.toast('Hentikan trip sebelum ganti kendaraan', 'warning');
       return;
     }
     this.selectedVehicleId = vehicleId;
@@ -160,7 +160,7 @@ const App = {
     const card = document.querySelector(`.vehicle-card[data-id="${vehicleId}"]`);
     if (card) card.classList.add('active');
 
-    this.toast(`Selected: ${this.currentVehicle.name}`, 'info');
+    this.toast(`Terpilih: ${this.currentVehicle.name}`, 'info');
   },
 
   _showAddVehicleModal() {
@@ -197,10 +197,10 @@ const App = {
       this._renderVehicles();
       this._selectVehicle(vehicle.id);
       this.dashboard.refreshStats();
-      this.toast(`Vehicle "${name}" added`, 'success');
+      this.toast(`Kendaraan "${name}" ditambahkan`, 'success');
       return vehicle;
     } catch (e) {
-      this.toast('Failed to add vehicle', 'error');
+      this.toast('Gagal menambahkan kendaraan', 'error');
       return null;
     }
   },
@@ -215,13 +215,13 @@ const App = {
 
   async _startTracking() {
     if (!this.currentVehicle) {
-      this.toast('Select a vehicle first', 'warning');
+      this.toast('Pilih kendaraan terlebih dahulu', 'warning');
       return;
     }
 
     const ok = this.tracker.start();
     if (!ok) {
-      this.toast('Geolocation not supported', 'error');
+      this.toast('Geolokasi tidak didukung', 'error');
       return;
     }
 
@@ -236,10 +236,10 @@ const App = {
       this._updateTrackingUI(true);
       this.mapManager.flyTo(pos.lat, pos.lng, 16);
       this.mapManager.updatePosition(this.currentVehicle.id, pos.lat, pos.lng, pos.speed, pos.heading);
-      this.toast('Trip recording started', 'success');
+      this.toast('Trip dimulai', 'success');
     } catch (e) {
       this.tracker.stop();
-      this.toast('Could not get GPS. Ensure location access is granted.', 'error');
+      this.toast('Gagal mendapatkan GPS. Pastikan izin lokasi diberikan.', 'error');
     }
   },
 
@@ -257,7 +257,7 @@ const App = {
         const dist = trip.distance > 1000
           ? `${(trip.distance / 1000).toFixed(2)} km`
           : `${Math.round(trip.distance)} m`;
-        this.toast(`Trip finished · ${dist} traveled`, 'success');
+        this.toast(`Trip selesai · ${dist} ditempuh`, 'success');
         this.dashboard.refreshTrips(this.currentVehicle?.id);
         this.dashboard.refreshStats();
       } catch (e) { /* silent */ }
@@ -269,10 +269,10 @@ const App = {
   _updateTrackingUI(active) {
     const btn = byId('btn-start-trip');
     if (active) {
-      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/></svg><span>Stop</span>`;
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/></svg><span>Berhenti</span>`;
       btn.className = 'btn btn-danger btn-recording';
     } else {
-      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Start Trip</span>`;
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Mulai Trip</span>`;
       btn.className = 'btn btn-success';
     }
   },
@@ -306,7 +306,7 @@ const App = {
   async _deleteVehicle(vehicleId) {
     const vehicle = this.vehicles.find(v => v.id === vehicleId);
     if (!vehicle) return;
-    if (!confirm(`Delete vehicle "${vehicle.name}"?\nAll tracking data will be removed.`)) return;
+    if (!confirm(`Hapus kendaraan "${vehicle.name}"?\nSemua data tracking akan dihapus.`)) return;
 
     try {
       if (this.currentVehicle?.id === vehicleId) {
@@ -320,9 +320,9 @@ const App = {
       this.vehicles = this.vehicles.filter(v => v.id !== vehicleId);
       this._renderVehicles();
       this.dashboard.refreshStats();
-      this.toast(`Vehicle "${vehicle.name}" deleted`, 'info');
+      this.toast(`Kendaraan "${vehicle.name}" dihapus`, 'info');
     } catch (e) {
-      this.toast('Failed to delete vehicle', 'error');
+      this.toast('Gagal menghapus kendaraan', 'error');
     }
   },
 
