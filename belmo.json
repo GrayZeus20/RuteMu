@@ -1,0 +1,9 @@
+{
+  "name": "vehicle-monitor",
+  "runtime": "node",
+  "startCommand": "npm start",
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "3000"
+  }
+}
