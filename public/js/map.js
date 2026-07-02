@@ -11,7 +11,7 @@ class MapManager {
       className: 'map-tiles'
     }).addTo(this.map);
 
-    L.control.zoom({ position: 'bottomright' }).addTo(this.map);
+    L.control.zoom({ position: 'topright' }).addTo(this.map);
 
     this.markers = {};
     this.trailPolylines = {};
