@@ -23,15 +23,24 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
+  const isGET = e.request.method === 'GET';
 
-  // Network-first for API, socket, CDN
-  if (url.pathname.startsWith('/api/') || url.hostname.includes('socket.io') || url.hostname.includes('unpkg.com') || url.hostname.includes('cdn.')) {
+  // API: only cache GET requests, pass others straight through
+  if (url.pathname.startsWith('/api/')) {
+    if (isGET) e.respondWith(networkFirst(e.request));
+    return;
+  }
+
+  // Socket.io & CDN: network-first for GET
+  if (isGET && (url.hostname.includes('socket.io') || url.hostname.includes('unpkg.com') || url.hostname.includes('cdn.'))) {
     e.respondWith(networkFirst(e.request));
     return;
   }
 
-  // Cache-first for app assets
-  e.respondWith(cacheFirst(e.request));
+  // Cache-first for app assets (GET only)
+  if (isGET) {
+    e.respondWith(cacheFirst(e.request));
+  }
 });
 
 async function cacheFirst(req) {
