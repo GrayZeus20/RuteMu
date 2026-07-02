@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Real-time vehicle GPS tracking and monitoring">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/css/style.css?v=2">
+  <title>RuteMu - Vehicle Monitor</title>
+</head>
+<body>
+  <div id="app">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <div class="header-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4"/></svg>
+        </div>
+        <span class="header-title">RuteMu</span>
+        <span class="header-badge">LIVE</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-success" id="btn-start-trip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Start Trip</span>
+        </button>
+        <button class="btn btn-ghost btn-icon" id="btn-add-vehicle" title="Add Vehicle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+        </button>
+        <button class="btn btn-ghost btn-icon" id="btn-fit-all" title="Fit All">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="main">
+      <!-- MAP -->
+      <div class="map-container">
+        <div id="map"></div>
+
+        <!-- Map overlay buttons -->
+        <div class="map-overlay map-overlay-top-right">
+          <button class="map-btn" id="btn-locate" title="My Location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/></svg>
+          </button>
+        </div>
+
+        <!-- Live trip info panel -->
+        <div class="live-panel" id="live-panel">
+          <div class="live-panel-header">
+            <span class="live-panel-title">
+              <span class="live-dot active" id="live-dot"></span>
+              Recording Trip
+            </span>
+            <button class="btn btn-sm btn-danger" id="btn-stop-trip">Stop</button>
+          </div>
+          <div class="live-grid">
+            <div class="live-item">
+              <div class="live-value" id="live-speed">0 <span class="live-unit">km/h</span></div>
+              <div class="live-label">Speed</div>
+            </div>
+            <div class="live-item">
+              <div class="live-value" id="live-distance">0 <span class="live-unit">m</span></div>
+              <div class="live-label">Distance</div>
+            </div>
+            <div class="live-item">
+              <div class="live-value" id="live-duration">00:00</div>
+              <div class="live-label">Duration</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRAWER (sidebar) -->
+      <div class="drawer">
+        <div class="drawer-tabs">
+          <button class="drawer-tab active" data-tab="vehicles">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4"/></svg>
+            <span>Vehicles</span>
+          </button>
+          <button class="drawer-tab" data-tab="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span>Dashboard</span>
+          </button>
+        </div>
+
+        <!-- Tab: Vehicles -->
+        <div class="tab-content active" id="tab-vehicles">
+          <div class="vehicle-add-row">
+            <input type="text" placeholder="Vehicle name..." id="add-vehicle-name">
+            <input type="color" id="add-vehicle-color" value="#6366f1">
+            <button class="btn btn-primary" id="add-vehicle-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            </button>
+          </div>
+          <div class="section-label">Your Vehicles</div>
+          <div class="vehicle-list" id="vehicle-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4"/></svg>
+              </div>
+              <div class="empty-state-text">No vehicles yet.<br>Add one to start tracking!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Dashboard -->
+        <div class="tab-content" id="tab-dashboard">
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="stat-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="stat-card-value" id="current-speed">0</div>
+              <div class="stat-card-label">Speed (km/h)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div class="stat-card-value" id="total-distance">0 m</div>
+              <div class="stat-card-label">Total Distance</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="stat-card-value" id="total-trips">0</div>
+              <div class="stat-card-label">Total Trips</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4"/></svg>
+              </div>
+              <div class="stat-card-value" id="total-vehicles">0</div>
+              <div class="stat-card-label">Vehicles</div>
+            </div>
+          </div>
+          <div class="trip-section-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Trip History
+          </div>
+          <div class="trip-list" id="trip-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="empty-state-text">No trips recorded yet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Add Vehicle -->
+  <div class="modal-overlay" id="vehicle-modal">
+    <div class="modal">
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4"/></svg>
+        Add New Vehicle
+      </h2>
+      <div class="modal-field">
+        <label for="modal-vehicle-name">Vehicle Name</label>
+        <input type="text" id="modal-vehicle-name" placeholder="e.g. Truck 01, Motor Unit 3">
+      </div>
+      <div class="modal-field">
+        <label for="modal-vehicle-color">Color</label>
+        <input type="color" id="modal-vehicle-color" value="#6366f1">
+      </div>
+      <button class="btn btn-primary" id="modal-add-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        Add Vehicle
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/tracker.js"></script>
+  <script src="/js/map.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
