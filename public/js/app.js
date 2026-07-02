@@ -219,6 +219,11 @@ const App = {
       return;
     }
 
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+      this.toast('Geolokasi butuh HTTPS. Buka via https://', 'error');
+      return;
+    }
+
     const ok = this.tracker.start();
     if (!ok) {
       this.toast('Geolokasi tidak didukung', 'error');
@@ -239,7 +244,11 @@ const App = {
       this.toast('Trip dimulai', 'success');
     } catch (e) {
       this.tracker.stop();
-      this.toast('Gagal mendapatkan GPS. Pastikan izin lokasi diberikan.', 'error');
+      const isHttp = location.protocol !== 'https:' && location.hostname !== 'localhost';
+      const msg = isHttp
+        ? 'Geolokasi butuh HTTPS. Buka via https://'
+        : 'Gagal dapat GPS. Cek izin lokasi & coba di luar ruangan.';
+      this.toast(msg, 'error');
     }
   },
 

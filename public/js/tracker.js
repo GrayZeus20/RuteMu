@@ -4,7 +4,8 @@ class Tracker {
     this.active = false;
     this.currentPosition = null;
     this.onPositionChange = null;
-    this.options = { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 };
+    this.highAccuracyOpts = { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 };
+    this.lowAccuracyOpts = { enableHighAccuracy: false, maximumAge: 15000, timeout: 10000 };
   }
 
   start() {
@@ -26,7 +27,7 @@ class Tracker {
         if (this.onPositionChange) this.onPositionChange(this.currentPosition);
       },
       (err) => console.warn('Geolocation error:', err.message),
-      this.options
+      this.highAccuracyOpts
     );
     return true;
   }
@@ -42,17 +43,38 @@ class Tracker {
   getCurrentPosition() {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
-        (pos) => resolve({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-          speed: pos.coords.speed || 0,
-          heading: pos.coords.heading || 0,
-          accuracy: pos.coords.accuracy || 0,
-          altitude: pos.coords.altitude || 0
-        }),
-        reject,
-        this.options
+        (pos) => resolve(this._extractPos(pos)),
+        async () => {
+          try {
+            const pos = await this._getPositionLowAccuracy();
+            resolve(pos);
+          } catch {
+            reject();
+          }
+        },
+        this.highAccuracyOpts
       );
     });
+  }
+
+  _getPositionLowAccuracy() {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve(this._extractPos(pos)),
+        reject,
+        this.lowAccuracyOpts
+      );
+    });
+  }
+
+  _extractPos(pos) {
+    return {
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude,
+      speed: pos.coords.speed || 0,
+      heading: pos.coords.heading || 0,
+      accuracy: pos.coords.accuracy || 0,
+      altitude: pos.coords.altitude || 0
+    };
   }
 }
