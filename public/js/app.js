@@ -70,6 +70,15 @@ const App = {
     const mainEl = document.querySelector('.main');
     document.querySelectorAll('.drawer-tab').forEach(tab => {
       tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+
+        if (target === 'map') {
+          App._toggleFullscreenMap();
+          document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          return;
+        }
+
         const wasActive = tab.classList.contains('active');
         if (wasActive) {
           mainEl.classList.toggle('drawer-full');
