@@ -39,18 +39,18 @@ const App = {
     byId('btn-locate').addEventListener('click', () => this.mapManager.locateUser());
 
     // Tab switching
-    const drawer = document.querySelector('.drawer');
+    const mainEl = document.querySelector('.main');
     document.querySelectorAll('.drawer-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         if (tab.classList.contains('active')) {
-          drawer.classList.toggle('collapsed');
+          mainEl.classList.toggle('drawer-expanded');
           return;
         }
-        drawer.classList.remove('collapsed');
         document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
         byId(`tab-${tab.dataset.tab}`).classList.add('active');
+        mainEl.classList.add('drawer-expanded');
       });
     });
 
@@ -166,8 +166,34 @@ const App = {
     const card = document.querySelector(`.vehicle-card[data-id="${vehicleId}"]`);
     if (card) card.classList.add('active');
 
+    this._updateMiniBar();
     this.toast(`Terpilih: ${this.currentVehicle.name}`, 'info');
   },
+
+  _updateMiniBar() {
+    const bar = byId('mini-vehicle-bar');
+    if (!bar) return;
+    if (!this.currentVehicle) {
+      bar.style.display = 'none';
+      return;
+    }
+    bar.style.display = 'flex';
+    const avatar = byId('mini-v-avatar');
+    const name = byId('mini-v-name');
+    const meta = byId('mini-v-meta');
+    const status = byId('mini-v-status');
+    if (avatar) {
+      avatar.textContent = (this.currentVehicle.name || '?')[0].toUpperCase();
+      avatar.style.background = this.currentVehicle.color || '#6366f1';
+    }
+    if (name) name.textContent = this.currentVehicle.name;
+    if (meta) meta.textContent = this.currentVehicle.id.slice(0, 8);
+    if (status) {
+      status.textContent = 'offline';
+      status.className = 'mini-v-status offline';
+    }
+  },
+
 
   _showAddVehicleModal() {
     byId('vehicle-modal').classList.add('show');
@@ -298,6 +324,9 @@ const App = {
     this.mapManager.updatePosition(this.currentVehicle.id, pos.lat, pos.lng, pos.speed, pos.heading);
     this.dashboard.updateTripProgress(pos);
 
+    const meta = byId('mini-v-meta');
+    if (meta) meta.textContent = `${(pos.speed * 3.6).toFixed(1)} km/h`;
+
     if (this.socket?.connected) {
       this.socket.emit('position-update', {
         vehicleId: this.currentVehicle.id,
@@ -316,6 +345,14 @@ const App = {
       el.textContent = isOnline ? 'online' : 'offline';
       el.className = `vehicle-status ${isOnline ? 'online' : 'offline'}`;
     });
+    if (this.currentVehicle) {
+      const miniStatus = byId('mini-v-status');
+      if (miniStatus) {
+        const isOnline = onlineIds.has(this.currentVehicle.id);
+        miniStatus.textContent = isOnline ? 'online' : 'offline';
+        miniStatus.className = `mini-v-status ${isOnline ? 'online' : 'offline'}`;
+      }
+    }
   },
 
   async _deleteVehicle(vehicleId) {
@@ -329,6 +366,7 @@ const App = {
         this.currentVehicle = null;
         this.selectedVehicleId = null;
         this.currentTrip = null;
+        this._updateMiniBar();
       }
       await API.deleteVehicle(vehicleId);
       this.mapManager.removeVehicle(vehicleId);

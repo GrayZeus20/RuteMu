@@ -480,14 +480,72 @@ body {
 }
 .modal .btn { width: 100%; justify-content: center; padding: 10px; }
 
+/* ─── MINI VEHICLE BAR (mobile) ─── */
+.mini-vehicle-bar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  gap: 10px;
+  flex-shrink: 0;
+}
+.mini-v-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+.mini-v-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  flex-shrink: 0;
+}
+.mini-v-info {
+  min-width: 0;
+}
+.mini-v-name {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mini-v-meta {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 1px;
+}
+.mini-v-status {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+.mini-v-status.online { background: var(--success-bg); color: var(--success); }
+.mini-v-status.offline { background: rgba(100,116,139,0.1); color: var(--text-tertiary); }
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 820px) {
   .drawer { width: 100%; border-left: none; }
   .main { flex-direction: column-reverse; }
   .map-container { height: 55vh; flex: none; }
   .drawer { height: 45vh; }
-  .drawer.collapsed { height: auto; min-height: 0; }
-  .drawer.collapsed .tab-content { display: none !important; }
+  .mini-vehicle-bar { display: flex; }
+  .main.drawer-expanded .map-container { display: none; }
+  .main.drawer-expanded .drawer { height: 100%; }
   .header { padding: 6px 10px; min-height: 44px; gap: 4px; }
   .header-title { font-size: 14px; }
   .header-left { gap: 6px; flex-shrink: 1; min-width: 0; }
@@ -557,19 +615,16 @@ body {
 @media (min-height: 800px) and (max-width: 820px) {
   .map-container { height: 60vh; }
   .drawer { height: 40vh; }
-  .drawer.collapsed { height: auto; min-height: 0; }
 }
 
 @media (min-height: 900px) and (max-width: 820px) {
   .map-container { height: 50vh; }
   .drawer { height: 50vh; }
-  .drawer.collapsed { height: auto; min-height: 0; }
 }
 
 @media (max-height: 650px) and (max-width: 820px) {
   .map-container { height: 45vh; }
   .drawer { height: 55vh; }
-  .drawer.collapsed { height: auto; min-height: 0; }
   .map-btn { width: 32px; height: 32px; }
   .map-btn svg { width: 16px; height: 16px; }
   .drawer-tab { padding: 6px 0; }
