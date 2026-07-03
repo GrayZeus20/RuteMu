@@ -233,13 +233,44 @@ const RideManager = {
     this._bound = true;
     byId('ride-start')?.addEventListener('click', () => this.toggleStartStop());
     byId('ride-close')?.addEventListener('click', () => this.close());
-    byId('ride-locate')?.addEventListener('click', () => { if (!this.rideMap) return; this._locateRideUser(); });
-    byId('ride-layers')?.addEventListener('click', () => this._toggleMapLayer());
-    byId('ride-3d')?.addEventListener('click', () => this._openGoogleMapsView());
-    byId('ride-spotify')?.addEventListener('click', () => this._openSpotify());
-    byId('ride-heart')?.addEventListener('click', () => this._openHealthConnect());
-    byId('ride-live')?.addEventListener('click', () => this._shareRide('live'));
+    byId('ride-locate')?.addEventListener('click', () => {
+      if (!this.rideMap) return;
+      this._locateRideUser();
+      byId('ride-locate')?.setAttribute('aria-pressed', 'true');
+      setTimeout(() => byId('ride-locate')?.setAttribute('aria-pressed', 'false'), 1200);
+    });
+    byId('ride-layers')?.addEventListener('click', () => {
+      this._toggleMapLayer();
+      const btn = byId('ride-layers');
+      if (btn) btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') !== 'true' ? 'true' : 'false');
+    });
+    byId('ride-3d')?.addEventListener('click', () => {
+      this._openGoogleMapsView();
+      const btn = byId('ride-3d');
+      if (btn) btn.setAttribute('aria-pressed', 'true');
+    });
+    byId('ride-spotify')?.addEventListener('click', () => {
+      this._openSpotify();
+      const btn = byId('ride-spotify');
+      if (btn) btn.setAttribute('aria-pressed', 'true');
+    });
+    byId('ride-heart')?.addEventListener('click', () => {
+      this._openHealthConnect();
+      const btn = byId('ride-heart');
+      if (btn) btn.setAttribute('aria-pressed', 'true');
+    });
+    const tools = ['ride-route','ride-bike','ride-heart','ride-live','ride-spotify'];
+    tools.forEach(id => {
+      byId(id)?.addEventListener('click', () => {
+        const btn = byId(id);
+        const was = btn?.getAttribute('aria-pressed') === 'true';
+        tools.forEach(t => byId(t)?.setAttribute('aria-pressed','false'));
+        if (!was) btn?.setAttribute('aria-pressed','true');
+      });
+      if (byId(id)) byId(id).setAttribute('aria-pressed','false');
+    });
     byId('ride-route')?.addEventListener('click', () => this._shareRide('route'));
+    byId('ride-live')?.addEventListener('click', () => this._shareRide('live'));
     byId('ride-refresh')?.addEventListener('click', () => this._refreshRide());
     byId('ride-settings')?.addEventListener('click', () => this._openSettings());
     window.addEventListener('keydown', this._onKey);
