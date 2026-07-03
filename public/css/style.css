@@ -543,11 +543,12 @@ body {
   .drawer { width: 100%; border-left: none; }
   .main { flex-direction: column; }
   .map-container { height: 55vh; flex: none; }
-  .drawer { height: auto; }
-  .drawer .tab-content.active { display: none; }
+  .drawer { height: auto; min-height: 50px; }
+  .drawer .tab-content { display: none !important; }
+  .drawer .tab-content.active { display: none !important; }
   .drawer .mini-vehicle-bar { display: none; }
   .main.drawer-expanded .drawer { height: 100%; }
-  .main.drawer-expanded .drawer .tab-content.active { display: block; }
+  .main.drawer-expanded .drawer .tab-content.active { display: block !important; }
   .main.drawer-expanded .drawer .mini-vehicle-bar { display: flex; }
   .main.drawer-expanded .map-container { display: none; }
 

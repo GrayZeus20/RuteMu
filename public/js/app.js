@@ -54,6 +54,15 @@ const App = {
       });
     });
 
+    // Mini vehicle bar click to toggle drawer on mobile
+    const miniBar = byId('mini-vehicle-bar');
+    if (miniBar) {
+      miniBar.addEventListener('click', (e) => {
+        if (e.target.closest('.btn') || e.target.closest('button')) return;
+        mainEl.classList.toggle('drawer-expanded');
+      });
+    }
+
     // Modal
     const modal = byId('vehicle-modal');
     modal.addEventListener('click', (e) => {
