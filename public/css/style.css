@@ -33,6 +33,7 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   overflow: hidden;
+  height: 100vh;
   height: 100dvh;
   height: 100svh;
   width: 100vw;
@@ -43,7 +44,7 @@ body {
   padding-right: env(safe-area-inset-right, 0px);
 }
 
-#app { display: flex; flex-direction: column; height: 100dvh; }
+#app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
 
 /* ─── TOP HEADER ─── */
 .header {
@@ -491,8 +492,8 @@ body {
   .header-logo svg { width: 15px; height: 15px; }
   .header-badge { display: none; }
   .header-actions { gap: 4px; flex-shrink: 0; }
-  .header-actions .btn span { display: none; }
-  .header-actions .btn { padding: 6px 8px; }
+  .header-actions .btn span { font-size: 10px; }
+  .header-actions .btn { padding: 6px 8px; gap: 4px; }
   .header-actions .btn-icon { width: 32px; height: 32px; padding: 0; }
   .live-panel { left: 8px; right: 8px; bottom: 8px; padding: 10px 12px; }
   .live-value { font-size: 18px; }
@@ -524,9 +525,9 @@ body {
 }
 
 @media (max-width: 480px) {
-  .drawer-tab { gap: 0; }
-  .drawer-tab span { display: none; }
-  .drawer-tab svg { width: 20px; height: 20px; }
+  .drawer-tab { gap: 4px; }
+  .drawer-tab span { font-size: 10px; }
+  .drawer-tab svg { width: 18px; height: 18px; }
   .live-value { font-size: 15px; }
   .live-label { font-size: 8px; }
   .live-grid { gap: 2px; }
@@ -551,6 +552,9 @@ body {
   .header-title { font-size: 12px; }
   .header-actions .btn { padding: 4px 6px; }
   .btn svg { width: 14px; height: 14px; }
+  .drawer-tab { gap: 2px; }
+  .drawer-tab span { font-size: 9px; }
+  .drawer-tab svg { width: 16px; height: 16px; }
   .stat-cards { grid-template-columns: 1fr 1fr; gap: 4px; }
   .stat-card-value { font-size: 13px; }
 }
