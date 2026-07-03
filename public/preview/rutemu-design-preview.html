@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html class="dark" lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RuteMu - Preview Desain</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Hanken+Grotesk:wght@600;700;900&family=Space+Mono:wght@500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-surface": "#dae2fd",
+          "surface-container": "#171f33",
+          "surface-container-lowest": "#060e20",
+          "surface-container-low": "#131b2e",
+          "surface-container-high": "#222a3d",
+          "surface-container-highest": "#2d3449",
+          "primary-container": "#8083ff",
+          "secondary-container": "#00b954",
+          "error-container": "#93000a",
+          "outline-variant": "#464554",
+          "glass-border": "rgba(255,255,255,0.1)",
+          "live-indicator": "#22c55e",
+          "background": "#0b1326",
+          "primary": "#c0c1ff",
+          "on-primary": "#1000a9",
+          "secondary": "#4ae176",
+          "tertiary": "#ffb3ad",
+          "on-primary-container": "#0d0096",
+          "on-secondary-container": "#004119",
+          "on-error-container": "#ffdad6"
+        },
+        fontFamily: {
+          "body": ["Inter", "system-ui", "sans-serif"],
+          "headline": ["Hanken Grotesk", "system-ui", "sans-serif"],
+          "mono": ["Space Mono", "monospace"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  * { -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .page-transition { animation: fadeUp .35s cubic-bezier(.16,1,.3,1); }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px);} to { opacity:1; transform:translateY(0);} }
+  .map-gradient { background: radial-gradient(circle at center, transparent 0%, #0b1326 85%); }
+</style>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary/30">
+
+<!-- MOBILE PREVIEW FRAME -->
+<section class="max-w-7xl mx-auto px-4 py-8">
+  <div class="flex items-end justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-headline font-bold text-primary">Preview Desain RuteMu</h1>
+      <p class="text-sm text-on-surface/80 mt-1">Tampilan mobile & desktop sesuai prompt, dark mode default dengan transisi halus.</p>
+    </div>
+    <span class="text-xs text-on-surface/60 bg-surface-container-high px-3 py-1 rounded-full border border-glass-border">STATIC PREVIEW</span>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Mobile -->
+    <div class="rounded-3xl border border-glass-border bg-surface-container-low shadow-2xl overflow-hidden">
+      <div class="px-4 py-3 border-b border-glass-border flex items-center justify-between bg-surface-container/60">
+        <span class="text-xs font-semibold text-on-surface/70">MOBILE</span>
+        <span class="text-[11px] text-on-surface/50">Android • Chrome</span>
+      </div>
+      <div class="relative bg-background">
+        <!-- Map -->
+        <div class="relative h-[520px]">
+          <div class="absolute inset-0 opacity-40" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA8QQTTdr2gIUxscXQC1ZlUue8x6asXX8ttGDm8_phekUsXFFUepZx6Vr_qZet8tLKoA58K44p50qaD_hLrIqYyMrCSbciR6nAxMzJ84E-VqHQfWo13rJXRDZDClzixa_o5XINVsWb-OUhZpzQwIg82mqiKPhAA1Yac0HTlMhJKyWN0A9h2hPydfi1hLd3EEO2PNLvAZLFK0Q1pFwNoqyMIg_9Ia9vm-qsb_5XooaYhLJS57CBwVPqjyh5-S0ejM9d7cFVrIA_1_ek'); background-size: cover; background-position: center;"></div>
+          <div class="absolute inset-0 map-gradient pointer-events-none"></div>
+
+          <!-- Header -->
+          <header class="absolute top-0 left-0 right-0 z-30 px-4 py-3 flex items-center justify-between bg-surface-container/50 glass-surface">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-indigo-500 flex items-center justify-center shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined text-white text-[20px]">directions_car</span>
+              </div>
+              <div>
+                <div class="text-[13px] font-headline font-bold leading-tight">RuteMu</div>
+                <div class="text-[10px] text-on-surface/70">Jakarta</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="w-9 h-9 rounded-full bg-surface-container-high/70 border border-glass-border flex items-center justify-center active:scale-95 transition">
+                <span class="material-symbols-outlined text-[18px]">settings</span>
+              </button>
+            </div>
+          </header>
+
+          <!-- Telemetry -->
+          <div class="absolute left-4 right-4 top-[72px] z-20 grid grid-cols-3 gap-3">
+            <div class="glass-surface border border-glass-border rounded-2xl p-3 text-center bg-surface-container-low/50 page-transition">
+              <div class="text-[10px] font-semibold text-on-surface/60 tracking-widest mb-1">KECEPATAN</div>
+              <div class="text-[22px] font-headline font-bold text-primary leading-none">0</div>
+              <div class="text-[10px] text-primary/70 mt-1">KM/H</div>
+            </div>
+            <div class="glass-surface border border-glass-border rounded-2xl p-3 text-center bg-surface-container-low/50 page-transition" style="animation-delay:.06s">
+              <div class="text-[10px] font-semibold text-on-surface/60 tracking-widest mb-1">JARAK</div>
+              <div class="text-[22px] font-headline font-bold text-secondary leading-none">0</div>
+              <div class="text-[10px] text-secondary/80 mt-1">KM</div>
+            </div>
+            <div class="glass-surface border border-glass-border rounded-2xl p-3 text-center bg-surface-container-low/50 page-transition" style="animation-delay:.12s">
+              <div class="text-[10px] font-semibold text-on-surface/60 tracking-widest mb-1">DURASI</div>
+              <div class="text-[22px] font-headline font-bold text-on-surface leading-none">00:00</div>
+              <div class="text-[10px] text-on-surface/70 mt-1">MENIT</div>
+            </div>
+          </div>
+
+          <!-- Map controls -->
+          <div class="absolute right-4 bottom-40 z-20 flex flex-col gap-3">
+            <button class="w-11 h-11 rounded-2xl glass-surface border border-glass-border flex items-center justify-center active:scale-95 transition">
+              <span class="material-symbols-outlined text-[20px]">add</span>
+            </button>
+            <button class="w-11 h-11 rounded-2xl glass-surface border border-glass-border flex items-center justify-center active:scale-95 transition">
+              <span class="material-symbols-outlined text-[20px]">remove</span>
+            </button>
+            <button class="w-11 h-11 rounded-2xl glass-surface border border-glass-border flex items-center justify-center text-primary bg-primary/10 active:scale-95 transition">
+              <span class="material-symbols-outlined text-[20px]">my_location</span>
+            </button>
+          </div>
+
+          <!-- Floating action -->
+          <div class="absolute left-1/2 -translate-x-1/2 bottom-[116px] z-20">
+            <button class="bg-secondary-container text-on-secondary-container rounded-full px-7 py-3 flex items-center gap-3 shadow-[0_10px_30px_rgba(0,185,84,0.35)] active:scale-95 transition hover:brightness-110 page-transition">
+              <span class="material-symbols-outlined text-[26px]">play_arrow</span>
+              <span class="text-[13px] font-headline font-bold tracking-tight">Mulai Trip</span>
+            </button>
+          </div>
+
+          <!-- Bottom nav -->
+          <nav class="absolute bottom-0 left-0 right-0 z-30 pb-6 pt-3 px-4 bg-surface-container-lowest/80 glass-surface border-t border-glass-border backdrop-blur-xl rounded-t-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
+            <div class="flex justify-between items-center">
+              <a class="flex flex-col items-center gap-1 text-primary" href="#">
+                <span class="material-symbols-outlined text-[24px]">dashboard</span>
+                <span class="text-[10px] font-semibold">Dashboard</span>
+              </a>
+              <a class="flex flex-col items-center gap-1 text-primary" href="#">
+                <span class="material-symbols-outlined text-[24px]">directions_car</span>
+                <span class="text-[10px] font-semibold">Vehicles</span>
+              </a>
+              <a class="flex flex-col items-center gap-1 text-on-surface/70 hover:text-on-surface transition" href="#">
+                <span class="material-symbols-outlined text-[24px]">history</span>
+                <span class="text-[10px] font-semibold">History</span>
+              </a>
+              <a class="flex flex-col items-center gap-1 text-on-surface/70 hover:text-on-surface transition" href="#">
+                <span class="material-symbols-outlined text-[24px]">person</span>
+                <span class="text-[10px] font-semibold">Profile</span>
+              </a>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop -->
+    <div class="rounded-3xl border border-glass-border bg-surface-container-low shadow-2xl overflow-hidden">
+      <div class="px-4 py-3 border-b border-glass-border flex items-center justify-between bg-surface-container/60">
+        <span class="text-xs font-semibold text-on-surface/70">DESKTOP</span>
+        <span class="text-[11px] text-on-surface/50">Responsif • Glassmorphism • Dark</span>
+      </div>
+      <div class="relative bg-background">
+        <!-- Sidebar -->
+        <aside class="fixed left-0 top-0 bottom-0 w-[140px] bg-surface-container-low/70 glass-surface border-r border-glass-border hidden md:flex flex-col items-center py-6 z-40">
+          <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 mb-10">
+            <span class="material-symbols-outlined text-white text-[22px]">route</span>
+          </div>
+          <div class="flex flex-col gap-7 w-full items-center">
+            <button class="text-primary bg-primary-container/20 p-3 rounded-xl transition">dashboard</button>
+            <button class="text-on-surface/60 hover:text-primary transition">directions_car</button>
+            <button class="text-on-surface/60 hover:text-primary transition">history</button>
+            <button class="text-on-surface/60 hover:text-primary transition">notifications</button>
+            <button class="text-on-surface/60 hover:text-primary transition">settings</button>
+          </div>
+          <div class="mt-auto">
+            <button class="text-[#ffb4ab]/80 hover:text-[#ffb4ab] transition">logout</button>
+          </div>
+        </aside>
+
+        <!-- Content -->
+        <div class="md:ml-[140px]">
+          <!-- Header -->
+          <header class="sticky top-0 z-30 px-6 py-4 bg-surface-container/60 glass-surface border-b border-glass-border flex items-center justify-between">
+            <div>
+              <h2 class="text-headline font-headline font-bold text-primary">Dashboard</h2>
+              <p class="text-xs text-on-surface/70">Ringkasan armada dan telemetry terkini.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="hidden md:flex items-center gap-3 mr-2 text-[11px] font-semibold text-on-surface/70">
+                <span class="text-primary cursor-pointer">DASHBOARD</span>
+                <span class="hover:text-primary cursor-pointer transition">VEHICLES</span>
+                <span class="hover:text-primary cursor-pointer transition">HISTORY</span>
+              </div>
+              <button class="w-10 h-10 rounded-full bg-surface-container-high border border-glass-border flex items-center justify-center hover:brightness-110 transition">
+                <span class="material-symbols-outlined text-[20px]">search</span>
+              </button>
+              <button class="w-10 h-10 rounded-full bg-surface-container-high border border-glass-border flex items-center justify-center hover:brightness-110 transition">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+              </button>
+              <div class="w-10 h-10 rounded-full border-2 border-primary/40 overflow-hidden">
+                <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVbCnzI_bUXkzsr_cDocqc-s9ww5QiDWnarKarbBO6mqe-ZpLLwOupj4S10b4cChD9Hzwks421dl4zAZdL3qxm6wHpBdLtCEVYFfjNHcdSVHETyNh5ft91rfhzkjDgcsOuD8HTWmyIZ1HXXPykY5D97E33mlnthNSccrRxuX0rLgCZmgcjAQzAOQfv0rWOh2CJWBCs5aeXeYcnosd88K-oCKgQ_tGpKEP51XErDfgWvr2xrTeb9UJNzcv6u_BA-URnbw-SBTFBwJY" alt="avatar" />
+              </div>
+            </div>
+          </header>
+
+          <!-- Main -->
+          <main class="max-w-7xl mx-auto px-6 py-8">
+            <!-- Telemetry -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div class="glass-surface border border-glass-border rounded-2xl p-6 bg-surface-container-low/40 flex flex-col items-center justify-center page-transition">
+                <div class="text-[11px] font-semibold text-on-surface/60 tracking-widest mb-2">KECEPATAN</div>
+                <div class="flex items-baseline gap-2">
+                  <span class="text-[44px] font-headline font-bold text-primary leading-none">0</span>
+                  <span class="text-xs text-primary/70 font-mono">km/h</span>
+                </div>
+              </div>
+              <div class="glass-surface border border-glass-border rounded-2xl p-6 bg-surface-container-low/40 flex flex-col items-center justify-center page-transition" style="animation-delay:.06s">
+                <div class="text-[11px] font-semibold text-on-surface/60 tracking-widest mb-2">JARAK TEMPUH</div>
+                <div class="flex items-baseline gap-2">
+                  <span class="text-[44px] font-headline font-bold text-secondary leading-none">12.4</span>
+                  <span class="text-xs text-secondary/80 font-mono">km</span>
+                </div>
+              </div>
+              <div class="glass-surface border border-glass-border rounded-2xl p-6 bg-surface-container-low/40 flex flex-col items-center justify-center page-transition" style="animation-delay:.12s">
+                <div class="text-[11px] font-semibold text-on-surface/60 tracking-widest mb-2">DURASI TRIP</div>
+                <div class="flex items-baseline gap-2">
+                  <span class="text-[44px] font-headline font-bold text-on-surface leading-none">00:45</span>
+                  <span class="text-xs text-on-surface/70 font-mono">min</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bento -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="glass-surface border border-glass-border rounded-2xl p-4 flex items-center gap-4 hover:-translate-y-1 transition duration-300">
+                <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center">
+                  <span class="material-symbols-outlined text-primary">battery_charging_full</span>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-on-surface/60">BATTERY</p>
+                  <p class="font-bold text-on-surface">88%</p>
+                </div>
+              </div>
+              <div class="glass-surface border border-glass-border rounded-2xl p-4 flex items-center gap-4 hover:-translate-y-1 transition duration-300">
+                <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center">
+                  <span class="material-symbols-outlined text-secondary">signal_cellular_4_bar</span>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-on-surface/60">GPS SIGNAL</p>
+                  <p class="font-bold text-on-surface">Excellent</p>
+                </div>
+              </div>
+              <div class="glass-surface border border-glass-border rounded-2xl p-4 flex items-center gap-4 hover:-translate-y-1 transition duration-300">
+                <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center">
+                  <span class="material-symbols-outlined text-tertiary">thermostat</span>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-on-surface/60">ENGINE TEMP</p>
+                  <p class="font-bold text-on-surface">92°C</p>
+                </div>
+              </div>
+              <div class="glass-surface border border-glass-border rounded-2xl p-4 flex items-center gap-4 hover:-translate-y-1 transition duration-300">
+                <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center">
+                  <span class="material-symbols-outlined text-primary-fixed">local_gas_station</span>
+                </div>
+                <div>
+                  <p class="text-[10px] font-semibold text-on-surface/60">FUEL LVL</p>
+                  <p class="font-bold text-on-surface">65%</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vehicles preview -->
+            <div class="mt-10">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-headline font-headline font-bold text-on-surface">Armada Kendaraan</h3>
+                <button class="bg-primary text-on-primary px-4 py-2 rounded-xl text-xs font-bold hover:brightness-110 active:scale-95 transition">Tambah Kendaraan</button>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="glass-surface border border-glass-border rounded-2xl p-5 relative hover:-translate-y-1 transition duration-300">
+                  <div class="absolute top-4 right-4 flex items-center gap-1.5 bg-secondary-container/20 px-2.5 py-1 rounded-full border border-secondary/30">
+                    <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75 animate-ping"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span></span>
+                    <span class="text-[10px] font-bold text-secondary uppercase tracking-wider">Online</span>
+                  </div>
+                  <div class="flex items-center gap-4 mb-5">
+                    <div class="w-14 h-14 rounded-full bg-primary-container/20 border-2 border-primary text-primary font-headline font-bold flex items-center justify-center">TX</div>
+                    <div>
+                      <h4 class="font-headline font-bold text-on-surface leading-tight">Tesla Model X</h4>
+                      <p class="text-xs text-on-surface-variant mt-0.5">B 1234 RUT • Electric SUV</p>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3 bg-surface-container-low/50 rounded-xl p-3 mb-4">
+                    <div><p class="text-[10px] text-on-surface-variant mb-1">KECEPATAN</p><p class="font-mono text-sm text-primary">85 <span class="text-[10px]">KM/H</span></p></div>
+                    <div><p class="text-[10px] text-on-surface-variant mb-1">BATERAI</p><p class="font-mono text-sm text-secondary">72 <span class="text-[10px]">%</span></p></div>
+                  </div>
+                  <div class="flex justify-between items-center pt-2">
+                    <button class="text-xs text-primary font-semibold">LIHAT DETAIL</button>
+                    <button class="text-on-surface-variant hover:text-on-surface transition"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+                  </div>
+                </div>
+
+                <div class="glass-surface border border-glass-border rounded-2xl p-5 relative opacity-80 hover:-translate-y-1 transition duration-300">
+                  <div class="absolute top-4 right-4 flex items-center gap-1.5 bg-outline-variant/20 px-2.5 py-1 rounded-full border border-outline/30">
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-outline"></span>
+                    <span class="text-[10px] font-bold text-outline-variant uppercase tracking-wider">Offline</span>
+                  </div>
+                  <div class="flex items-center gap-4 mb-5">
+                    <div class="w-14 h-14 rounded-full bg-surface-container-high border-2 border-outline-variant text-on-surface-variant font-headline font-bold flex items-center justify-center">TT</div>
+                    <div>
+                      <h4 class="font-headline font-bold text-on-surface leading-tight">Toyota Transporter</h4>
+                      <p class="text-xs text-on-surface-variant mt-0.5">K 7788 LOG • Cargo Van</p>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3 bg-surface-container-low/50 rounded-xl p-3 mb-4">
+                    <div><p class="text-[10px] text-on-surface-variant mb-1">LOKASI TERAKHIR</p><p class="font-mono text-sm text-on-surface">Depot Semarang</p></div>
+                    <div><p class="text-[10px] text-on-surface-variant mb-1">JARAK TOTAL</p><p class="font-mono text-sm text-on-surface">12,450 <span class="text-[10px]">KM</span></p></div>
+                  </div>
+                  <div class="flex justify-between items-center pt-2">
+                    <button class="text-xs text-primary font-semibold">LIHAT DETAIL</button>
+                    <button class="text-on-surface-variant hover:text-on-surface transition"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-xs text-on-surface/60 mt-6">Catatan: ini adalah tampilan statis preview prompt, belum menghubungkan API/backend.</p>
+</section>
+</body>
+</html>
