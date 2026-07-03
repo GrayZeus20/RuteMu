@@ -46,6 +46,21 @@ const App = {
     byId('btn-locate').addEventListener('click', () => this.mapManager.locateUser());
     byId('btn-toggle-drawer').addEventListener('click', () => this._toggleDrawer());
 
+    // Bottom actions when sidebar is hidden
+    byId('bottom-actions').addEventListener('click', (e) => {
+      const btn = e.target.closest('.bottom-btn');
+      if (!btn) return;
+      const action = btn.dataset.action;
+      if (action === 'vehicles' || action === 'dashboard') {
+        this._showSidebarAndOpenTab(action);
+      } else if (action === 'add-vehicle') {
+        this._showSidebarAndOpenTab('vehicles');
+        this._showAddVehicleModal();
+      } else if (action === 'locate') {
+        this.mapManager.locateUser();
+      }
+    });
+
     // Tab switching
     const mainEl = document.querySelector('.main');
     document.querySelectorAll('.drawer-tab').forEach(tab => {
@@ -265,6 +280,19 @@ const App = {
   _toggleDrawer() {
     const mainEl = document.querySelector('.main');
     mainEl.classList.toggle('drawer-hidden');
+  },
+
+  _showSidebarAndOpenTab(tab) {
+    const mainEl = document.querySelector('.main');
+    if (mainEl.classList.contains('drawer-hidden')) {
+      mainEl.classList.remove('drawer-hidden');
+    }
+    document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    const targetTab = document.querySelector(`.drawer-tab[data-tab="${tab}"]`);
+    if (targetTab) targetTab.classList.add('active');
+    const content = byId(`tab-${tab}`);
+    if (content) content.classList.add('active');
   },
 
   async _toggleTracking() {

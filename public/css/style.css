@@ -700,7 +700,32 @@ body {
   .stat-card-value { font-size: 13px; }
 }
 
-/* ─── TOAST ─── */
+/* ─── BOTTOM FLOATING ACTIONS (sidebar hidden mode) ─── */
+.bottom-actions {
+  display: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 1000;
+  background: rgba(19, 24, 41, 0.92);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+.main.drawer-hidden .bottom-actions { display: flex; }
+.bottom-btn {
+  width: 44px; height: 44px; border-radius: 50%; border: none;
+  background: transparent; color: var(--text-secondary);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: var(--transition);
+}
+.bottom-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+.bottom-btn:active { transform: scale(0.96); }
+.bottom-btn svg { width: 20px; height: 20px; }
 .toast-container {
   position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
   z-index: 9999; display: flex; flex-direction: column; gap: 6px;
