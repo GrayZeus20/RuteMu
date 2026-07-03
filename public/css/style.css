@@ -573,8 +573,6 @@ body {
 
   .main.drawer-hidden .live-panel { left: 8px; right: 8px; }
   .main.drawer-hidden .map-container { height: 100%; min-height: 100dvh; }
-
-  /* Trip card text wrapping */
   .trip-card { flex-wrap: wrap; gap: 4px; }
   .trip-left { min-width: 0; flex: 1 1 60%; }
   .trip-date { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -878,12 +876,14 @@ body {
   box-shadow: 0 6px 24px rgba(0,0,0,0.45);
 }
 .map-logo svg { width: 18px; height: 18px; opacity: 0.9; }
-  display: none;
+
+.bottom-actions {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   z-index: 1000;
+  display: flex;
   background: rgba(19, 24, 41, 0.92);
   backdrop-filter: blur(16px) saturate(1.4);
   -webkit-backdrop-filter: blur(16px) saturate(1.4);
@@ -892,7 +892,6 @@ body {
   padding: 6px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.45);
 }
-.main.drawer-hidden .bottom-actions { display: flex; }
 .bottom-btn {
   width: 44px; height: 44px; border-radius: 50%; border: none;
   background: transparent; color: var(--text-secondary);
