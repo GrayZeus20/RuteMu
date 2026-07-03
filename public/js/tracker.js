@@ -4,8 +4,30 @@ class Tracker {
     this.active = false;
     this.currentPosition = null;
     this.onPositionChange = null;
-    this.highAccuracyOpts = { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 };
+    this.wakeLock = null;
+    this.highAccuracyOpts = { enableHighAccuracy: true, maximumAge: 3000, timeout: 15000 };
     this.lowAccuracyOpts = { enableHighAccuracy: false, maximumAge: 15000, timeout: 10000 };
+  }
+
+  async requestWakeLock() {
+    try {
+      if ('wakeLock' in navigator) {
+        this.wakeLock = await navigator.wakeLock.request('screen');
+        this.wakeLock.addEventListener('release', () => {
+          console.log('Wake Lock released');
+        });
+        console.log('Wake Lock acquired');
+      }
+    } catch (err) {
+      console.warn('Wake Lock failed:', err.message);
+    }
+  }
+
+  releaseWakeLock() {
+    if (this.wakeLock) {
+      this.wakeLock.release().catch(() => {});
+      this.wakeLock = null;
+    }
   }
 
   start() {
@@ -14,6 +36,13 @@ class Tracker {
       return false;
     }
     this.active = true;
+    this.requestWakeLock();
+    this._startWatching();
+    return true;
+  }
+
+  _startWatching() {
+    if (this.watchId !== null) return;
     this.watchId = navigator.geolocation.watchPosition(
       (pos) => {
         this.currentPosition = {
@@ -26,13 +55,18 @@ class Tracker {
         };
         if (this.onPositionChange) this.onPositionChange(this.currentPosition);
       },
-      (err) => console.warn('Geolocation error:', err.message),
+      (err) => {
+        console.warn('Geolocation error:', err.message);
+        if (this.active && err.code !== 1) {
+          setTimeout(() => this._startWatching(), 3000);
+        }
+      },
       this.highAccuracyOpts
     );
-    return true;
   }
 
   stop() {
+    this.releaseWakeLock();
     if (this.watchId !== null) {
       navigator.geolocation.clearWatch(this.watchId);
       this.watchId = null;

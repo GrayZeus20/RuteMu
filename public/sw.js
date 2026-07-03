@@ -72,3 +72,11 @@ async function networkFirst(req) {
     return new Response('Offline', { status: 503 });
   }
 }
+
+self.addEventListener('message', (e) => {
+  if (e.data === 'keepalive') {
+    self.clients.matchAll().then(clients => {
+      clients.forEach(client => client.postMessage('alive'));
+    });
+  }
+});

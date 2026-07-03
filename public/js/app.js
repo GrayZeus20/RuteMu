@@ -21,6 +21,7 @@ const App = {
 
     setInterval(() => this.dashboard.refreshStats(), 15000);
     setInterval(() => this._cleanStale(), 30000);
+    setInterval(() => this._swKeepAlive(), 25000);
 
     this._registerSW();
   },
@@ -28,6 +29,12 @@ const App = {
   _registerSW() {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  },
+
+  _swKeepAlive() {
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage('keepalive');
     }
   },
 
@@ -81,11 +88,21 @@ const App = {
   },
 
   _connectSocket() {
-    this.socket = io();
+    this.socket = io({
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 2000,
+      reconnectionDelayMax: 10000
+    });
     this.socket.on('connect', () => {
+      console.log('Socket connected');
       if (this.currentVehicle) {
         this.socket.emit('register-vehicle', { vehicleId: this.currentVehicle.id, name: this.currentVehicle.name });
       }
+    });
+
+    this.socket.on('disconnect', (reason) => {
+      console.warn('Socket disconnected:', reason);
     });
 
     this.socket.on('position', (data) => {
@@ -278,6 +295,9 @@ const App = {
       this.dashboard.resetTrip();
       this.dashboard.updateTripProgress(pos);
       this.dashboard.showLivePanel();
+      this._startKeepAlive();
+      this._handleVisibility();
+      window.addEventListener('beforeunload', this._beforeUnload);
 
       this._updateTrackingUI(true);
       this.mapManager.flyTo(pos.lat, pos.lng, 16);
@@ -297,7 +317,17 @@ const App = {
     this.tracker.stop();
     this.trackingActive = false;
     this._updateTrackingUI(false);
+    this._stopKeepAlive();
+    window.removeEventListener('beforeunload', this._beforeUnload);
     this._endCurrentTrip();
+  },
+
+  _beforeUnload(e) {
+    if (this.trackingActive) {
+      e.preventDefault();
+      e.returnValue = 'Trip sedang berlangsung! Yakin ingin keluar?';
+      return e.returnValue;
+    }
   },
 
   async _endCurrentTrip() {
@@ -396,6 +426,37 @@ const App = {
 
   _cleanStale() {
     // placeholder for periodic cleanup
+  },
+
+  _startKeepAlive() {
+    this._stopKeepAlive();
+    this._keepAliveId = setInterval(() => {
+      if (this.socket?.connected) {
+        this.socket.emit('ping');
+      }
+      if (this.trackingActive && !this.tracker.active) {
+        console.warn('Tracker stopped unexpectedly, restarting...');
+        this.tracker.start();
+      }
+    }, 10000);
+  },
+
+  _stopKeepAlive() {
+    if (this._keepAliveId) {
+      clearInterval(this._keepAliveId);
+      this._keepAliveId = null;
+    }
+  },
+
+  _handleVisibility() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && this.trackingActive) {
+        console.log('Tracking continues in background...');
+      } else if (!document.hidden && this.trackingActive && !this.tracker.active) {
+        console.log('Page visible, restarting tracker...');
+        this.tracker.start();
+      }
+    });
   },
 
   toast(message, type = 'info') {
