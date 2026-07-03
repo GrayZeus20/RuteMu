@@ -541,7 +541,7 @@ body {
 /* ─── RESPONSIVE ─── */
 @media (max-width: 820px) {
   .drawer { width: 100%; border-left: none; }
-  .main { flex-direction: column-reverse; }
+  .main { flex-direction: column; }
   .map-container { height: 55vh; flex: none; }
   .drawer { height: 45vh; }
   .mini-vehicle-bar { display: flex; }
