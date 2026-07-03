@@ -16,8 +16,12 @@ const App = {
     this._connectSocket();
 
     await this._loadVehicles();
-
     this.tracker.onPositionChange = (pos) => this._onPosition(pos);
+
+    this.mapContainer = document.querySelector('.map-container');
+    window.addEventListener('resize', () => {
+      if (this.mapManager?.map) this.mapManager.map.invalidateSize({ debounce: 150 });
+    });
 
     setInterval(() => this.dashboard.refreshStats(), 15000);
     setInterval(() => this._cleanStale(), 30000);
@@ -45,6 +49,7 @@ const App = {
     byId('btn-fit-all').addEventListener('click', () => this.mapManager.fitAllVehicles());
     byId('btn-locate').addEventListener('click', () => this.mapManager.locateUser());
     byId('btn-toggle-drawer').addEventListener('click', () => this._toggleDrawer());
+    byId('btn-fullscreen-map').addEventListener('click', () => this._toggleFullscreenMap());
 
     // Bottom actions when sidebar is hidden
     byId('bottom-actions').addEventListener('click', (e) => {
@@ -281,6 +286,15 @@ const App = {
   _toggleDrawer() {
     const mainEl = document.querySelector('.main');
     mainEl.classList.toggle('drawer-hidden');
+  },
+
+  _toggleFullscreenMap() {
+    const mainEl = document.querySelector('.main');
+    if (!mainEl) return;
+    const active = mainEl.classList.toggle('fullscreen-map');
+    if (this.mapManager?.map) {
+      setTimeout(() => this.mapManager.map.invalidateSize(), 50);
+    }
   },
 
   _showSidebarAndOpenTab(tab) {
