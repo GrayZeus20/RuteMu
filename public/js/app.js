@@ -39,8 +39,14 @@ const App = {
     byId('btn-locate').addEventListener('click', () => this.mapManager.locateUser());
 
     // Tab switching
+    const drawer = document.querySelector('.drawer');
     document.querySelectorAll('.drawer-tab').forEach(tab => {
       tab.addEventListener('click', () => {
+        if (tab.classList.contains('active')) {
+          drawer.classList.toggle('collapsed');
+          return;
+        }
+        drawer.classList.remove('collapsed');
         document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
