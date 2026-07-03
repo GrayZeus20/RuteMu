@@ -523,12 +523,38 @@ body {
   /* Status badge hidden when tracking */
   .vehicle-status { font-size: 9px; padding: 2px 7px; }
   .btn-delete-vehicle { opacity: 1; }
+
+  /* Mobile bottom tab bar */
+  .drawer-tabs {
+    order: 1;
+    border-bottom: none;
+    border-top: 1px solid var(--border);
+    padding: 0;
+    background: var(--bg-secondary);
+    flex-shrink: 0;
+  }
+  .drawer-tab {
+    padding: 8px 0 6px;
+    gap: 3px;
+    border-radius: 0;
+  }
+  .drawer-tab span { font-size: 10px; }
+  .drawer-tab svg { width: 20px; height: 20px; }
+  .drawer-tab.active::after { display: none; }
+  .drawer-tab.active {
+    color: var(--accent);
+    background: rgba(99, 102, 241, 0.08);
+  }
+  .drawer-tab:active {
+    background: rgba(99, 102, 241, 0.15);
+  }
+  .tab-content { order: 0; }
 }
 
 @media (max-width: 480px) {
-  .drawer-tab { gap: 4px; }
+  .drawer-tab { gap: 2px; padding: 10px 0 8px; }
   .drawer-tab span { font-size: 10px; }
-  .drawer-tab svg { width: 18px; height: 18px; }
+  .drawer-tab svg { width: 22px; height: 22px; }
   .live-value { font-size: 15px; }
   .live-label { font-size: 8px; }
   .live-grid { gap: 2px; }
@@ -553,9 +579,9 @@ body {
   .header-title { font-size: 12px; }
   .header-actions .btn { padding: 4px 6px; }
   .btn svg { width: 14px; height: 14px; }
-  .drawer-tab { gap: 2px; }
+  .drawer-tab { gap: 2px; padding: 8px 0 6px; }
   .drawer-tab span { font-size: 9px; }
-  .drawer-tab svg { width: 16px; height: 16px; }
+  .drawer-tab svg { width: 20px; height: 20px; }
   .stat-cards { grid-template-columns: 1fr 1fr; gap: 4px; }
   .stat-card-value { font-size: 13px; }
 }
