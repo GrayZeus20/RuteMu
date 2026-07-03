@@ -261,38 +261,8 @@ body {
   right: 12px;
 }
 
-/* Mobile: no duplicate nav; drawer tabs are the single source of truth */
-@media (max-width: 820px) {
-  .drawer-tabs {
-    order: -1;
-    border-bottom: none;
-    border-top: 1px solid var(--border);
-    padding: 0;
-    background: var(--bg-secondary);
-    flex-shrink: 0;
-  }
-
-  .drawer-tab {
-    padding: 14px 0 12px;
-    gap: 2px;
-    border-radius: 0;
-  }
-  .drawer-tab span { display: none; }
-  .drawer-tab svg { width: 26px; height: 26px; }
-  .drawer-tab.active::after { display: none; }
-  .drawer-tab.active {
-    color: var(--accent);
-    background: rgba(99, 102, 241, 0.1);
-  }
-  .drawer-tab:active {
-    background: rgba(99, 102, 241, 0.18);
-  }
-
-  .main.drawer-hidden .bottom-actions { display: none !important; }
-  .main.drawer-hidden .map-container { min-height: 100dvh; }
-
-  .main.drawer-full .map-container { display: none; }
-}
+/* Mobile: hide bottom-actions; drawer-tabs are the single source of truth */
+.bottom-actions { display: none !important; }
 
 @media (min-width: 821px) {
   .main.drawer-hidden .bottom-actions { display: flex; }
@@ -602,7 +572,7 @@ body {
   .map-btn svg { width: 18px; height: 18px; }
 
   .main.drawer-hidden .live-panel { left: 8px; right: 8px; }
-  .main.drawer-hidden .map-container { min-height: 100dvh; }
+  .main.drawer-hidden .map-container { height: 100%; min-height: 100dvh; }
 
   /* Trip card text wrapping */
   .trip-card { flex-wrap: wrap; gap: 4px; }
