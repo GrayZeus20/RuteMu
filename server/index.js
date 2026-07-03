@@ -1,9 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const path = require('path');
-const { getDb, save } = require('./db');
+const db = require('./db');
 
 const vehiclesRouter = require('./routes/vehicles');
 const tripsRouter = require('./routes/trips');
@@ -19,14 +20,9 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/api/vehicles', vehiclesRouter);
 app.use('/api/trips', tripsRouter);
 
-app.get('/api/stats', (req, res) => {
-  const db = getDb();
-  res.json({
-    vehicles: db.vehicles.length,
-    trips: db.trips.filter(t => t.end_time).length,
-    distance: db.trips.reduce((sum, t) => sum + (t.distance || 0), 0),
-    positions: db.positions.length
-  });
+app.get('/api/stats', async (req, res) => {
+  const stats = await db.getStats();
+  res.json(stats);
 });
 
 const onlineVehicles = new Map();
@@ -42,11 +38,10 @@ io.on('connection', (socket) => {
     console.log('Vehicle registered:', name, vehicleId);
   });
 
-  socket.on('position-update', (data) => {
+  socket.on('position-update', async (data) => {
     const { vehicleId, tripId, lat, lng, speed, heading, accuracy, altitude } = data;
     if (vehicleId && lat != null && lng != null) {
-      const db = getDb();
-      db.positions.push({
+      await db.positions().insertOne({
         trip_id: tripId || '',
         vehicle_id: vehicleId,
         lat, lng,
@@ -54,7 +49,6 @@ io.on('connection', (socket) => {
         accuracy: accuracy || 0, altitude: altitude || 0,
         timestamp: new Date().toISOString()
       });
-      save();
 
       if (onlineVehicles.has(vehicleId)) {
         onlineVehicles.get(vehicleId).lastUpdate = Date.now();
@@ -74,6 +68,12 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+
+db.connect().then(() => {
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}).catch(err => {
+  console.error('MongoDB connection failed:', err);
+  process.exit(1);
 });
