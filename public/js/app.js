@@ -46,29 +46,14 @@ const App = {
     byId('btn-locate').addEventListener('click', () => this.mapManager.locateUser());
 
     // Tab switching
-    const mainEl = document.querySelector('.main');
     document.querySelectorAll('.drawer-tab').forEach(tab => {
       tab.addEventListener('click', () => {
-        if (tab.classList.contains('active')) {
-          mainEl.classList.toggle('drawer-expanded');
-          return;
-        }
         document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
         byId(`tab-${tab.dataset.tab}`).classList.add('active');
-        mainEl.classList.add('drawer-expanded');
       });
     });
-
-    // Mini vehicle bar click to toggle drawer on mobile
-    const miniBar = byId('mini-vehicle-bar');
-    if (miniBar) {
-      miniBar.addEventListener('click', (e) => {
-        if (e.target.closest('.btn') || e.target.closest('button')) return;
-        mainEl.classList.toggle('drawer-expanded');
-      });
-    }
 
     // Modal
     const modal = byId('vehicle-modal');
