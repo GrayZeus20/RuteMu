@@ -80,19 +80,8 @@
 
       <!-- DRAWER (sidebar) -->
       <div class="drawer">
-        <div class="drawer-tabs">
-          <button class="drawer-tab active" data-tab="vehicles">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4"/></svg>
-            <span>Kendaraan</span>
-          </button>
-          <button class="drawer-tab" data-tab="dashboard">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            <span>Dashboard</span>
-          </button>
-        </div>
-
         <!-- Mini vehicle info bar (mobile) -->
-        <div class="mini-vehicle-bar" id="mini-vehicle-bar" style="display:none">
+        <div class="mini-vehicle-bar" id="mini-vehicle-bar">
           <div class="mini-v-left">
             <div class="mini-v-avatar" id="mini-v-avatar">?</div>
             <div class="mini-v-info">
@@ -167,6 +156,18 @@
               <div class="empty-state-text">Belum ada trip</div>
             </div>
           </div>
+        </div>
+
+        <!-- Tab bar (bottom on mobile, top on desktop via column-reverse) -->
+        <div class="drawer-tabs">
+          <button class="drawer-tab active" data-tab="vehicles">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4"/></svg>
+            <span>Kendaraan</span>
+          </button>
+          <button class="drawer-tab" data-tab="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span>Dashboard</span>
+          </button>
         </div>
       </div>
     </div>
