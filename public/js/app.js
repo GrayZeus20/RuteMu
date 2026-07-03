@@ -46,12 +46,19 @@ const App = {
     byId('btn-locate').addEventListener('click', () => this.mapManager.locateUser());
 
     // Tab switching
+    const mainEl = document.querySelector('.main');
     document.querySelectorAll('.drawer-tab').forEach(tab => {
       tab.addEventListener('click', () => {
+        const wasActive = tab.classList.contains('active');
+        if (wasActive) {
+          mainEl.classList.toggle('drawer-full');
+          return;
+        }
         document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
         byId(`tab-${tab.dataset.tab}`).classList.add('active');
+        mainEl.classList.add('drawer-full');
       });
     });
 
@@ -183,9 +190,11 @@ const App = {
 
   _updateMiniBar() {
     const bar = byId('mini-vehicle-bar');
+    const headerName = byId('header-vehicle-name');
     if (!bar) return;
     if (!this.currentVehicle) {
       bar.style.display = 'none';
+      if (headerName) { headerName.classList.remove('show'); headerName.textContent = ''; }
       return;
     }
     bar.style.display = 'flex';
@@ -202,6 +211,10 @@ const App = {
     if (status) {
       status.textContent = 'offline';
       status.className = 'mini-v-status offline';
+    }
+    if (headerName) {
+      headerName.textContent = this.currentVehicle.name;
+      headerName.classList.add('show');
     }
   },
 
