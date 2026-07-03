@@ -44,6 +44,7 @@ const App = {
     byId('btn-stop-trip').addEventListener('click', () => this._stopTracking());
     byId('btn-fit-all').addEventListener('click', () => this.mapManager.fitAllVehicles());
     byId('btn-locate').addEventListener('click', () => this.mapManager.locateUser());
+    byId('btn-toggle-drawer').addEventListener('click', () => this._toggleDrawer());
 
     // Tab switching
     const mainEl = document.querySelector('.main');
@@ -259,6 +260,11 @@ const App = {
       this.toast('Gagal menambahkan kendaraan', 'error');
       return null;
     }
+  },
+
+  _toggleDrawer() {
+    const mainEl = document.querySelector('.main');
+    mainEl.classList.toggle('drawer-hidden');
   },
 
   async _toggleTracking() {

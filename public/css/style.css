@@ -242,6 +242,18 @@ body {
   flex-shrink: 0;
   overflow: hidden;
   min-height: 0;
+  transition: var(--transition);
+}
+
+/* Sidebar collapsed state */
+.main.drawer-hidden .drawer {
+  width: 0;
+  border-left-width: 0;
+}
+
+/* When drawer is hidden, keep overlays aligned safely */
+.main.drawer-hidden .map-container .map-overlay {
+  right: 12px;
 }
 .drawer-tabs {
   display: flex;
@@ -589,6 +601,9 @@ body {
   .map-overlay-top-right { top: 8px; right: 8px; }
   .map-btn { width: 36px; height: 36px; }
   .map-btn svg { width: 18px; height: 18px; }
+
+  .main.drawer-hidden .live-panel { left: 8px; right: 8px; }
+  .main.drawer-hidden .map-container { min-height: 50vh; }
 
   /* Trip card text wrapping */
   .trip-card { flex-wrap: wrap; gap: 4px; }
