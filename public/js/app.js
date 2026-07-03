@@ -30,9 +30,13 @@ const App = {
     this._registerSW();
   },
 
+  _installPrompt: null,
+
   _registerSW() {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
+      navigator.serviceWorker.register('/sw.js')
+        .then(() => this._captureInstallPrompt())
+        .catch(() => {});
     }
   },
 
@@ -40,6 +44,22 @@ const App = {
     if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
       navigator.serviceWorker.controller.postMessage('keepalive');
     }
+  },
+
+  _captureInstallPrompt() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      this._installPrompt = e;
+      this.toast('Install RuteMu sebagai aplikasi?', 'info');
+    });
+  },
+
+  async _promptInstall() {
+    if (!this._installPrompt) return false;
+    this._installPrompt.prompt();
+    const { outcome } = await this._installPrompt.userChoice;
+    this._installPrompt = null;
+    return outcome === 'accepted';
   },
 
   _setupUI() {
@@ -50,6 +70,7 @@ const App = {
     byId('btn-locate').addEventListener('click', () => this.mapManager.locateUser());
     byId('btn-toggle-drawer').addEventListener('click', () => this._toggleDrawer());
     byId('btn-fullscreen-map').addEventListener('click', () => this._toggleFullscreenMap());
+    byId('btn-install').addEventListener('click', () => this._promptInstall());
 
     // Bottom actions when sidebar is hidden
     byId('bottom-actions').addEventListener('click', (e) => {

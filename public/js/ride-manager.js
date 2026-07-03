@@ -65,6 +65,12 @@ const RideManager = {
     this.active ? this.stopRide() : this.startRide();
   },
 
+  async share() {
+    if (!this.rideMode) return;
+    const type = this.active ? 'live' : 'route';
+    await this._shareRide(type);
+  },
+
   addSnapshot(posOrLat, lng, speedMps, heading) {
     if (!this.rideMode) return;
     let point;
@@ -259,13 +265,16 @@ const RideManager = {
 
   _openGoogleMapsView() {
     try {
-      const url = 'google.streetview:';
-      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        const base = /Android/i.test(navigator.userAgent) ? 'geo:0,0?q=' : 'comgooglemaps://?q=';
-        window.open(base + this.ridePath.at(-1)?.join(',') || '', '_blank');
-        return;
+      const last = this.ridePath.at(-1);
+      if (!last) { this._fallbackShare(); return; }
+      const latLng = `${last[0]},${last[1]}`;
+      if (this._isAndroid()) {
+        window.open(`geo:0,0?q=${latLng}`, '_blank');
+      } else if (this._isiOS()) {
+        window.open(`comgooglemaps://?q=${latLng}`, '_blank');
+      } else {
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${latLng}`, '_blank');
       }
-      window.open(url, '_blank');
     } catch (err) { this._fallbackShare(); }
   },
 
