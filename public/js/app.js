@@ -88,11 +88,12 @@ const App = {
       if (e.key === 'Enter') this._addVehicle();
     });
 
-    // Inline add vehicle
-    byId('add-vehicle-btn').addEventListener('click', () => this._addVehicleInline());
-    byId('add-vehicle-name').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') this._addVehicleInline();
-    });
+    if (typeof window.RideManager === 'undefined') {
+      const s = document.createElement('script');
+      s.src = '/js/ride-manager.js';
+      s.defer = true;
+      document.head.appendChild(s);
+    }
   },
 
   _connectSocket() {
