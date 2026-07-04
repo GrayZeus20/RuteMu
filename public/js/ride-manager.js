@@ -113,7 +113,7 @@ const RideManager = {
     const container = byId('ride-map');
     if (!container) return;
     if (this.rideMap) return;
-    this.rideMap = L.map('ride-map', { zoomControl: false, attributionControl: true }).setView([37.75, -122.45], 14);
+    this.rideMap = L.map('ride-map', { zoomControl: false, attributionControl: true }).setView([-6.2, 106.8], 14);
     const GoogleRoad = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       maxZoom: 20,
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -160,12 +160,12 @@ const RideManager = {
 
   _ensureMinuteMarker() {
     if (this.rideMinuteMarker) return;
-    const marker = L.circleMarker([37.749, -122.447], {
+    const marker = L.circleMarker([-6.2, 106.8], {
       radius: 9, color: '#fff', fillColor: '#16a34a', fillOpacity: 0.95, weight: 3
     }).addTo(this.rideMap || this._initRideMap());
     this.rideMinuteMarker = marker;
-    if (this.rideMap) this.rideMap.setView([37.749, -122.447], 15);
-    this._appendPoint([37.749, -122.447]);
+    if (this.rideMap) this.rideMap.setView([-6.2, 106.8], 15);
+    this._appendPoint([-6.2, 106.8]);
   },
 
   _estimateDistanceMeters() {
