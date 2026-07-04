@@ -55,13 +55,12 @@ app.get('/api/explore/places', async (req, res) => {
   }
 
   pipeline.push({ $limit: Number(limit) || 20 });
-  const docs = await db.collection('places').aggregate(pipeline).toArray();
+  const docs = await db.places().aggregate(pipeline).toArray();
   res.json(docs);
 });
 
 app.get('/api/explore/suppliers', async (req, res) => {
-  const docs = await db.collection('places')
-    .find({ type: 'supplier' })
+  const docs = await db.places()
     .sort({ transactions: -1 })
     .limit(20)
     .toArray();
@@ -69,7 +68,7 @@ app.get('/api/explore/suppliers', async (req, res) => {
 });
 
 app.get('/api/explore/payments', async (req, res) => {
-  const docs = await db.collection('places')
+  const docs = await db.places()
     .find({ type: 'payment' })
     .sort({ lastVisit: -1 })
     .limit(20)
@@ -78,7 +77,7 @@ app.get('/api/explore/payments', async (req, res) => {
 });
 
 app.get('/api/explore/history', async (req, res) => {
-  const docs = await db.collection('places')
+  const docs = await db.places()
     .find({ type: { $in: ['supplier','payment'] } })
     .sort({ lastVisit: -1 })
     .limit(30)
