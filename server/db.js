@@ -36,6 +36,10 @@ function positions() {
   return db.collection('positions');
 }
 
+function places() {
+  return db.collection('places');
+}
+
 async function getStats() {
   const vCount = await vehicles().countDocuments();
   const tCount = await trips().countDocuments({ end_time: { $ne: null } });
@@ -46,4 +50,4 @@ async function getStats() {
   return { vehicles: vCount, trips: tCount, distance };
 }
 
-module.exports = { connect, close, uid, vehicles, trips, positions, getStats };
+module.exports = { connect, close, uid, vehicles, trips, positions, places, getStats };

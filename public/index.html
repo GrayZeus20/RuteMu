@@ -60,6 +60,38 @@
 
     <!-- MAIN -->
     <div class="main">
+      <!-- SEARCH BAR -->
+      <div class="search-wrap">
+        <div class="search-bar" id="search-bar">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="search-input" placeholder="Telusuri kendaraan, area, supplier...">
+          <button class="search-clear" id="search-clear" aria-label="Clear">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="quick-filters" id="quick-filters">
+          <button class="chip active" data-filter="all">Area</button>
+          <button class="chip" data-filter="supplier">Supplier</button>
+          <button class="chip" data-filter="payment">Pembayaran</button>
+          <button class="chip" data-filter="history">Riwayat</button>
+        </div>
+      </div>
+
+      <!-- BOTTOM SHEET -->
+      <div class="bottom-sheet" id="bottom-sheet">
+        <div class="sheet-handle" id="sheet-handle"></div>
+        <div class="sheet-header" id="sheet-handle-area">
+          <div class="sheet-title-row">
+            <div>
+              <div class="sheet-title" id="sheet-title">Wilayah</div>
+                      <div class="sheet-subtitle" id="sheet-subtitle">Area sekitar peta</div>
+            </div>
+            <div class="sheet-badge" id="sheet-badge">4</div>
+          </div>
+        </div>
+        <div class="sheet-list" id="sheet-list"></div>
+      </div>
+
       <!-- MAP -->
       <div class="map-container">
         <div id="map"></div>
@@ -105,7 +137,7 @@
         <!-- Bottom actions (visible when sidebar is hidden) -->
         <div class="bottom-actions" id="bottom-actions">
           <button class="bottom-btn" data-action="vehicles" title="Kendaraan">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4Z"/></svg>
           </button>
           <button class="bottom-btn" data-action="dashboard" title="Dashboard">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -115,6 +147,16 @@
           </button>
           <button class="bottom-btn" data-action="locate" title="Lokasi Saya">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/></svg>
+          </button>
+        </div>
+
+        <!-- Map overlay: compass + directions -->
+        <div class="map-overlay map-overlay-bottom-right" id="map-overlay-bottom-right">
+          <button class="map-btn" id="btn-compass" title="Kompas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 9.88 16.24 12 9.88 14.12 7.76 16.24 12 14.12 16.24 16.24 14.12 9.88 12 7.76 9.88 16.24 9.88 14.12 7.76 16.24 12 14.12" fill="currentColor" stroke="none"/></svg>
+          </button>
+          <button class="map-btn directions-btn" id="btn-directions" title="Petunjuk Arah">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h4l4-8h4l4 8h4"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
           </button>
         </div>
       </div>
@@ -202,19 +244,42 @@
         <!-- Tab bar (bottom on mobile, top on desktop via column-reverse) -->
         <div class="drawer-tabs">
           <button class="drawer-tab active" data-tab="vehicles">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4"/></svg>
-            <span>Kendaraan</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4Z"/></svg>
+            <span>Jelajahi</span>
           </button>
           <button class="drawer-tab" data-tab="map">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 21 18 21 2 16 6 8 2 1 6z"/><line x1="16" y1="2" x2="16" y2="18"/><line x1="8" y1="2" x2="8" y2="22"/></svg>
-            <span>Map</span>
+            <span>Anda</span>
           </button>
           <button class="drawer-tab" data-tab="dashboard">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            <span>Dashboard</span>
+            <span>Kontribusi</span>
           </button>
         </div>
+
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Add Vehicle -->
+  <div class="modal-overlay" id="vehicle-modal">
+    <div class="modal">
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M19 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/><path d="M3 10h4l3-5h4l3 5h4"/><path d="M3 10v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M7 10V6h10v4Z"/></svg>
+        Tambah Kendaraan Baru
+      </h2>
+      <div class="modal-field">
+        <label for="modal-vehicle-name">Nama Kendaraan</label>
+        <input type="text" id="modal-vehicle-name" placeholder="Contoh: Truk 01, Motor Unit 3">
+      </div>
+      <div class="modal-field">
+        <label for="modal-vehicle-color">Warna</label>
+        <input type="color" id="modal-vehicle-color" value="#6366f1">
+      </div>
+      <button class="btn btn-primary" id="modal-add-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        Tambah Kendaraan
+      </button>
     </div>
   </div>
 

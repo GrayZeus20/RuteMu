@@ -20,6 +20,72 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/api/vehicles', vehiclesRouter);
 app.use('/api/trips', tripsRouter);
 
+// Search + explore dataset
+app.get('/api/explore/places', async (req, res) => {
+  const { q, type, lat, lng, limit } = req.query;
+  const pipeline = [];
+
+  if (q) {
+    const regex = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    const match = { $or: [
+      { name: regex },
+      { address: regex },
+      { supplier: regex },
+      { category: regex }
+    ]};
+    pipeline.push({ $match: match });
+  }
+
+  if (type && type !== 'all') pipeline.push({ $match: { type } });
+
+  if (lat && lng) {
+    pipeline.push({
+      $addFields: {
+        distance: {
+          $sqrt: {
+            $add: [
+              { $pow: [{ $subtract: ['$lat', Number(lat)] }, 2] },
+              { $pow: [{ $subtract: ['$lng', Number(lng)] }, 2] }
+            ]
+          }
+        }
+      }
+    });
+    pipeline.push({ $sort: { distance: 1 } });
+  }
+
+  pipeline.push({ $limit: Number(limit) || 20 });
+  const docs = await db.collection('places').aggregate(pipeline).toArray();
+  res.json(docs);
+});
+
+app.get('/api/explore/suppliers', async (req, res) => {
+  const docs = await db.collection('places')
+    .find({ type: 'supplier' })
+    .sort({ transactions: -1 })
+    .limit(20)
+    .toArray();
+  res.json(docs);
+});
+
+app.get('/api/explore/payments', async (req, res) => {
+  const docs = await db.collection('places')
+    .find({ type: 'payment' })
+    .sort({ lastVisit: -1 })
+    .limit(20)
+    .toArray();
+  res.json(docs);
+});
+
+app.get('/api/explore/history', async (req, res) => {
+  const docs = await db.collection('places')
+    .find({ type: { $in: ['supplier','payment'] } })
+    .sort({ lastVisit: -1 })
+    .limit(30)
+    .toArray();
+  res.json(docs);
+});
+
 app.get('/api/stats', async (req, res) => {
   const stats = await db.getStats();
   res.json(stats);

@@ -14,8 +14,15 @@ const App = {
 
     this._setupUI();
     this._connectSocket();
+    this.explore = new Explore();
 
     await this._loadVehicles();
+    if (this.mapManager?.map) {
+      this.explore.setMap(this.mapManager.map);
+      this.explore.bindSheetInteractions();
+      this.explore.bindOverlayButtons();
+      this.explore._load();
+    }
     this.tracker.onPositionChange = (pos) => this._onPosition(pos);
 
     this.mapContainer = document.querySelector('.map-container');

@@ -23,5 +23,18 @@ const API = {
   getTrip(id) { return this.request(`/api/trips/${id}`); },
   getTripPositions(id) { return this.request(`/api/trips/${id}/positions`); },
 
-  getStats() { return this.request('/api/stats'); }
+  getStats() { return this.request('/api/stats'); },
+
+  getExplorePlaces({ q, type, lat, lng, limit } = {}) {
+    const qs = new URLSearchParams();
+    if (q) qs.set('q', q);
+    if (type && type !== 'all') qs.set('type', type);
+    if (lat != null && lng != null) { qs.set('lat', lat); qs.set('lng', lng); }
+    if (limit) qs.set('limit', limit);
+    const qstr = qs.toString();
+    return this.request(`/api/explore/places${qstr ? '?' + qstr : ''}`);
+  },
+  getExploreSuppliers() { return this.request('/api/explore/suppliers'); },
+  getExplorePayments() { return this.request('/api/explore/payments'); },
+  getExploreHistory() { return this.request('/api/explore/history'); }
 };
