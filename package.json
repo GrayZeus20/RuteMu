@@ -12,6 +12,19 @@
     "dotenv": "^16.6.1",
     "express": "^4.21.0",
     "mongodb": "^6.21.0",
+    "playwright": "^1.61.1",
     "socket.io": "^4.7.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GrayZeus20/RuteMu.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/GrayZeus20/RuteMu/issues"
+  },
+  "homepage": "https://github.com/GrayZeus20/RuteMu#readme"
 }
