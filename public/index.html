@@ -43,16 +43,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           <span>Mulai Trip</span>
         </button>
-        <button class="btn btn-ghost btn-icon" id="btn-fit-all" title="Fokus Semua Kendaraan" aria-label="Fokus Semua Kendaraan">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
-        </button>
-        <button class="btn btn-ghost btn-icon" id="btn-fullscreen-map" title="Fullscreen Peta" aria-label="Fullscreen Peta">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m0 8v3a2 2 0 0 0 2 2h3m8 0h3a2 2 0 0 0 2-2v-3m0-8v-3a2 2 0 0 0-2-2h-3"/></svg>
-        </button>
-        <button class="btn btn-ghost btn-icon" id="btn-install" title="Install App" aria-label="Install App">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        </button>
-        <button class="btn btn-ghost btn-icon" id="btn-toggle-drawer" title="Toggle Sidebar" aria-label="Toggle Sidebar">
+        <button class="btn btn-ghost btn-icon" id="btn-toggle-drawer" title="Kendaraan" aria-label="Kendaraan">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
         </button>
         <button class="btn btn-ghost btn-icon" id="btn-add-vehicle" title="Tambah Kendaraan" aria-label="Tambah Kendaraan">
@@ -107,15 +98,63 @@
           <button class="bottom-btn" data-action="dashboard" title="Dashboard" aria-label="Dashboard">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </button>
-          <button class="bottom-btn" data-action="add-vehicle" title="Tambah Kendaraan" aria-label="Tambah Kendaraan">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-          </button>
           <button class="bottom-btn" data-action="locate" title="Lokasi Saya" aria-label="Lokasi Saya">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/></svg>
           </button>
         </div>
 
 
+      </div>
+
+      <!-- DASHBOARD PANEL (desktop, right rail) -->
+      <div class="dash-panel" id="dash-panel">
+        <div class="dash-panel-header">
+          <div class="dash-vehicle-info" id="dash-vehicle-info">
+            <div class="dash-v-avatar" id="dash-v-avatar">?</div>
+            <div class="dash-v-detail">
+              <div class="dash-v-name" id="dash-v-name">Pilih Kendaraan</div>
+              <div class="dash-v-meta" id="dash-v-meta">—</div>
+            </div>
+          </div>
+          <div class="dash-v-status" id="dash-v-status">offline</div>
+        </div>
+
+        <div class="dash-telemetry">
+          <div class="tele-item">
+            <div class="tele-label">Kecepatan</div>
+            <div class="tele-value" id="tele-speed">0 <span class="tele-unit">km/h</span></div>
+          </div>
+          <div class="tele-item">
+            <div class="tele-label">RPM</div>
+            <div class="tele-value" id="tele-rpm">—</div>
+          </div>
+          <div class="tele-item">
+            <div class="tele-label">Bahan Bakar</div>
+            <div class="tele-value" id="tele-fuel">— <span class="tele-unit">%</span></div>
+          </div>
+          <div class="tele-item">
+            <div class="tele-label">Suhu Mesin</div>
+            <div class="tele-value" id="tele-temp">— <span class="tele-unit">°C</span></div>
+          </div>
+          <div class="tele-item">
+            <div class="tele-label">Tekanan Oli</div>
+            <div class="tele-value" id="tele-oil">— <span class="tele-unit">bar</span></div>
+          </div>
+          <div class="tele-item">
+            <div class="tele-label">Baterai</div>
+            <div class="tele-value" id="tele-battery">— <span class="tele-unit">V</span></div>
+          </div>
+        </div>
+
+        <div class="dash-section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Riwayat Trip
+        </div>
+        <div class="dash-trip-list" id="dash-trip-list">
+          <div class="empty-state">
+            <div class="empty-state-text">Belum ada trip</div>
+          </div>
+        </div>
       </div>
 
       <!-- DRAWER (sidebar) -->
