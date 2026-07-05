@@ -100,7 +100,7 @@ const App = {
     const drawer = document.querySelector('.drawer');
     const isMobile = () => window.innerWidth <= 820;
 
-    document.querySelectorAll('.drawer-tab').forEach(tab => {
+        document.querySelectorAll('.drawer-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.dataset.tab;
 
@@ -139,17 +139,23 @@ const App = {
           drawer.classList.add('visible');
           mainEl.classList.add('drawer-full');
         } else {
-          // Desktop behavior
+          // Desktop behavior - just switch tabs without hiding map
           const wasActive = tab.classList.contains('active');
           if (wasActive) {
-            mainEl.classList.toggle('drawer-full');
+            // If clicking same tab, toggle drawer visibility
+            mainEl.classList.toggle('drawer-hidden');
             return;
           }
           document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
           document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-          byId(`tab-${tab.dataset.tab}`).classList.add('active');
-          mainEl.classList.add('drawer-full');
+          const targetContent = byId(`tab-${tab.dataset.tab}`);
+          if (targetContent) targetContent.classList.add('active');
+          
+          // Ensure drawer is open on desktop
+          if (mainEl.classList.contains('drawer-hidden')) {
+            mainEl.classList.remove('drawer-hidden');
+          }
         }
       });
     });
