@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Hanken+Grotesk:wght@600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
-
 :root {
   --bg-primary: #0b1326;
   --bg-secondary: #131829;
@@ -24,7 +22,7 @@
   --radius-xl: 24px;
   --shadow: 0 4px 24px rgba(0,0,0,0.4);
   --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
-  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 :root {
   color-scheme: dark;
@@ -317,6 +315,7 @@ html.light .live-panel {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
 .live-unit { font-size: 10px; color: var(--text-tertiary); margin-left: 1px; -webkit-text-fill-color: var(--text-tertiary); }
 .live-label { font-size: 9px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
@@ -332,6 +331,7 @@ html.light .live-panel {
   overflow: hidden;
   min-height: 0;
   transition: var(--transition);
+  overscroll-behavior: contain;
 }
 
 .main.drawer-hidden .drawer {
@@ -501,6 +501,7 @@ html.light .live-panel {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-variant-numeric: tabular-nums;
 }
 .stat-card-label {
   font-size: 9px; color: var(--text-tertiary);
@@ -563,8 +564,9 @@ html.light .live-panel {
   border: 1px solid var(--border);
   transform: scale(0.95);
   opacity: 0;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  overscroll-behavior: contain;
 }
 html.light .modal {
   background: rgba(255,255,255,0.85);
@@ -833,6 +835,7 @@ html.light .modal {
   font-family: inherit;
   display: flex;
   flex-direction: column;
+  overscroll-behavior: contain;
 }
 .ride-screen.hidden { display: none; }
 .ride-map {
