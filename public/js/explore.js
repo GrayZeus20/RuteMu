@@ -108,19 +108,7 @@ class Explore {
   }
 
   bindOverlayButtons() {
-    const compassBtn = document.getElementById('btn-compass');
-    const dirBtn = document.getElementById('btn-directions');
-    compassBtn?.addEventListener('click', () => {
-      if (!this.map) return;
-      if (this.map.setBearing) this.map.setBearing(0);
-      if (App && App.toast) App.toast('Kompas: arah kembali ke atas', 'info');
-    });
-    dirBtn?.addEventListener('click', () => {
-      if (!this.map || !this.map.getCenter) return;
-      const c = this.map.getCenter();
-      this.map.flyTo([c.lat + 0.02, c.lng + 0.02], 15, { duration: 1 });
-      if (App && App.toast) App.toast('Petunjuk arah aktif', 'info');
-    });
+    // Compass & directions buttons removed — no longer in HTML
   }
 
   _markerIcon(initial, color) {
