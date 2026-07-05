@@ -96,27 +96,60 @@ const App = {
 
     // Tab switching
     const mainEl = document.querySelector('.main');
+    const drawer = document.querySelector('.drawer');
+    const isMobile = () => window.innerWidth <= 820;
+
     document.querySelectorAll('.drawer-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.dataset.tab;
 
         if (target === 'map') {
-          App._toggleFullscreenMap();
+          // Close drawer, show map full
+          if (isMobile()) {
+            mainEl.classList.remove('drawer-full');
+            drawer.classList.remove('visible');
+          } else {
+            App._toggleFullscreenMap();
+          }
           document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
+          if (App.mapManager?.map) setTimeout(() => App.mapManager.map.invalidateSize(), 100);
           return;
         }
 
-        const wasActive = tab.classList.contains('active');
-        if (wasActive) {
-          mainEl.classList.toggle('drawer-full');
-          return;
+        if (isMobile()) {
+          // Mobile: toggle drawer on/off when clicking same tab
+          const isActive = tab.classList.contains('active');
+          const drawerOpen = drawer.classList.contains('visible');
+
+          if (isActive && drawerOpen) {
+            drawer.classList.remove('visible');
+            mainEl.classList.remove('drawer-full');
+            return;
+          }
+
+          // Switch tab content
+          document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+          const content = byId(`tab-${tab.dataset.tab}`);
+          if (content) content.classList.add('active');
+
+          drawer.classList.add('visible');
+          mainEl.classList.add('drawer-full');
+        } else {
+          // Desktop behavior
+          const wasActive = tab.classList.contains('active');
+          if (wasActive) {
+            mainEl.classList.toggle('drawer-full');
+            return;
+          }
+          document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+          byId(`tab-${tab.dataset.tab}`).classList.add('active');
+          mainEl.classList.add('drawer-full');
         }
-        document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-        byId(`tab-${tab.dataset.tab}`).classList.add('active');
-        mainEl.classList.add('drawer-full');
       });
     });
 
@@ -322,7 +355,14 @@ const App = {
 
   _toggleDrawer() {
     const mainEl = document.querySelector('.main');
-    mainEl.classList.toggle('drawer-hidden');
+    const drawer = document.querySelector('.drawer');
+    if (window.innerWidth <= 820) {
+      // Mobile: toggle drawer visibility via class
+      mainEl.classList.toggle('drawer-full');
+      drawer.classList.toggle('visible', mainEl.classList.contains('drawer-full'));
+    } else {
+      mainEl.classList.toggle('drawer-hidden');
+    }
   },
 
   _toggleFullscreenMap() {
