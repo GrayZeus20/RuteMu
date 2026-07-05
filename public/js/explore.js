@@ -43,68 +43,7 @@ class Explore {
   setMap(map) { this.map = map; }
 
   bindSheetInteractions() {
-    const sheet = document.getElementById('bottom-sheet');
-    const handle = document.getElementById('sheet-handle');
-    const handleArea = document.getElementById('sheet-handle-area');
-    if (!sheet || !handle) return;
-    let startY = 0;
-    let startHeight = 0;
-    let dragging = false;
-    let minimized = false;
-
-    const setMinimized = (flag) => {
-      minimized = flag;
-      if (minimized) {
-        sheet.classList.add('minimized');
-        sheet.style.maxHeight = '44px';
-      } else {
-        sheet.classList.remove('minimized');
-        sheet.style.maxHeight = '';
-      }
-    };
-
-    const onStart = (y) => {
-      startY = y;
-      startHeight = sheet.getBoundingClientRect().height;
-      dragging = true;
-      setMinimized(false);
-    };
-    const onMove = (y) => {
-      if (!dragging) return;
-      const delta = Math.max(44, startHeight - (y - startY));
-      sheet.style.maxHeight = `${delta}px`;
-      if (delta <= 52) setMinimized(true);
-      else setMinimized(false);
-    };
-    const onEnd = () => {
-      dragging = false;
-      if (!minimized) sheet.style.maxHeight = '';
-    };
-
-    handle.addEventListener('touchstart', (e) => onStart(e.touches[0].clientY), { passive: true });
-    handle.addEventListener('touchmove', (e) => onMove(e.touches[0].clientY), { passive: true });
-    handle.addEventListener('touchend', onEnd);
-    handle.addEventListener('mousedown', (e) => {
-      onStart(e.clientY);
-      window.addEventListener('mousemove', mHandler);
-      window.addEventListener('mouseup', () => {
-        window.removeEventListener('mousemove', mHandler);
-        onEnd();
-      }, { once: true });
-    });
-    function mHandler(e) { onMove(e.clientY); }
-
-    handleArea?.addEventListener('click', (e) => {
-      if (dragDeltaFromHandle(e)) return; // avoid conflict with drag
-      setMinimized(!minimized);
-    });
-
-    function dragDeltaFromHandle(e) {
-      // If user dragged significantly, don't toggle
-      return false;
-    }
-
-    setMinimized(false);
+    // Bottom sheet removed — no interactions needed
   }
 
   bindOverlayButtons() {
@@ -161,39 +100,8 @@ class Explore {
   }
 
   _render(title, items) {
-    if (!this.titleEl || !this.subtitleEl || !this.listEl) return;
-    this.titleEl.textContent = title || 'Wilayah';
-    this.subtitleEl.textContent = items.length ? `${items.length} tempat` : 'Tidak ada hasil';
-    if (!items.length) {
-      this.listEl.innerHTML = `<div class="empty-state"><div class="empty-state-text">Belum ada data. Coba kata kunci lain.</div></div>`;
-      return;
-    }
-    this.listEl.innerHTML = items.map((item) => {
-      const initial = (item.name || '?')[0].toUpperCase();
-      return `<div class="place-card" data-id="${item.id || ''}" data-lat="${item.lat}" data-lng="${item.lng}">
-        <div class="place-icon" style="background:${item.color || '#6366f1'}">${initial}</div>
-        <div class="place-info">
-          <div class="place-name">${this._escape(item.name)}</div>
-          <div class="place-meta">${this._escape(item.address || item.category || item.supplier || '')}</div>
-        </div>
-        <div class="place-right">
-          ${item.rating ? `<div class="place-rate">${item.rating}</div>` : ''}
-          ${item.rating ? `<div class="place-sub">rating</div>` : ''}
-          ${this._chip(item)}
-        </div>
-      </div>`;
-    }).join('');
-
-    this.listEl.querySelectorAll('.place-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const lat = parseFloat(card.dataset.lat);
-        const lng = parseFloat(card.dataset.lng);
-        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-        if (this.map) {
-          this.map.flyTo([lat, lng], 16, { duration: 1 });
-        }
-      });
-    });
+    if (!this.listEl) return;
+    this._renderMapMarkers(items);
   }
 
   _chip(item) {

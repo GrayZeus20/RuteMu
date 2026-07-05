@@ -70,14 +70,15 @@ const App = {
   },
 
   _setupUI() {
-    byId('btn-add-vehicle').addEventListener('click', () => this._showAddVehicleModal());
-    byId('btn-start-trip').addEventListener('click', () => this._toggleTracking());
-    byId('btn-stop-trip').addEventListener('click', () => this._stopTracking());
-    byId('btn-fit-all').addEventListener('click', () => this.mapManager.fitAllVehicles());
-    byId('btn-locate').addEventListener('click', () => this.mapManager.locateUser());
-    byId('btn-toggle-drawer').addEventListener('click', () => this._toggleDrawer());
-    byId('btn-fullscreen-map').addEventListener('click', () => this._toggleFullscreenMap());
-    byId('btn-install').addEventListener('click', () => this._promptInstall());
+    const safe = (id, fn) => { const el = byId(id); if (el) el.addEventListener('click', fn); };
+    safe('btn-add-vehicle', () => this._showAddVehicleModal());
+    safe('btn-start-trip', () => this._toggleTracking());
+    safe('btn-stop-trip', () => this._stopTracking());
+    safe('btn-fit-all', () => { this.mapManager.fitAllVehicles(); this.toast('Fokus semua kendaraan', 'info'); });
+    safe('btn-locate', () => this.mapManager.locateUser());
+    safe('btn-toggle-drawer', () => this._toggleDrawer());
+    safe('btn-fullscreen-map', () => this._toggleFullscreenMap());
+    safe('btn-install', () => this._promptInstall());
 
     // Bottom actions when sidebar is hidden
     byId('bottom-actions').addEventListener('click', (e) => {
@@ -357,12 +358,18 @@ const App = {
     const mainEl = document.querySelector('.main');
     const drawer = document.querySelector('.drawer');
     if (window.innerWidth <= 820) {
-      // Mobile: toggle drawer visibility via class
       mainEl.classList.toggle('drawer-full');
       drawer.classList.toggle('visible', mainEl.classList.contains('drawer-full'));
     } else {
-      mainEl.classList.toggle('drawer-hidden');
+      if (mainEl.classList.contains('drawer-full')) {
+        mainEl.classList.remove('drawer-full');
+        document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+      } else {
+        mainEl.classList.toggle('drawer-hidden');
+      }
     }
+    setTimeout(() => { if (this.mapManager?.map) this.mapManager.map.invalidateSize(); }, 300);
   },
 
   _toggleFullscreenMap() {
