@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Dynamics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-black: #0B0E14;
+            --surface: #11151D;
+            --surface-hover: #1A2030;
+            --accent: #00E676;
+            --accent-dim: rgba(0, 230, 118, 0.1);
+            --text-main: #E5E7EB;
+            --text-muted: #6B7280;
+            --border: rgba(255, 255, 255, 0.08);
+            
+            --font-display: 'Syne', sans-serif;
+            --font-data: 'Space Mono', monospace;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        nav {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(11, 14, 20, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+
+        .eyebrow {
+            font-family: var(--font-data);
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eyebrow::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+            max-width: 900px;
+        }
+
+        .hero-sub {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .bento-item {
+            background: var(--surface);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .bento-item:hover {
+            background: var(--surface-hover);
+        }
+
+        .bento-item.large {
+            grid-column: span 2;
+            grid-row: span 2;
+            padding: 3rem;
+            justify-content: flex-end;
+            background: linear-gradient(45deg, var(--surface) 0%, #0A0C10 100%);
+        }
+
+        .data-label {
+            font-family: var(--font-data);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .data-value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .bento-item.large .data-value {
+            font-size: 4rem;
+        }
+
+        .accent-text { color: var(--accent); }
+
+        .cta-grid {
+            grid-column: span 4;
+            background: var(--bg-black);
+            padding: 2rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 1rem 2rem;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: 1fr 1fr; }
+            .bento-item.large { grid-column: span 2; }
+            .cta-grid { grid-column: span 2; }
+        }
+
+        @media (max-width: 600px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-item.large { grid-column: span 1; }
+            .cta-grid { grid-column: span 1; flex-direction: column; }
+            .btn-outline { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">APEX<span style="color: var(--accent)">.</span>DYNAMICS</div>
+        <div class="data-label">SYS: ONLINE</div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="eyebrow reveal">TRACK READY</div>
+            <h1 class="reveal">PRECISION<br>TELEMETRY<br>PROTOCOL</h1>
+            <p class="hero-sub reveal">Zero-latency data stream for high-performance track vehicles. Monitor critical engine health and lap performance from a single command center.</p>
+
+            <div class="bento-grid reveal">
+                <div class="bento-item large">
+                    <span class="data-label">VELOCITY</span>
+                    <span class="data-value accent-text" id="velocity">248</span>
+                    <span class="data-label" style="margin-top: auto;">KM/H</span>
+                </div>
+                <div class="bento-item">
+                    <span class="data-label">GEAR</span>
+                    <span class="data-value">05</span>
+                </div>
+                <div class="bento-item">
+                    <span class="data-label">RPM</span>
+                    <span class="data-value">7.4K</span>
+                </div>
+                <div class="bento-item">
+                    <span class="data-label">TIRE TEMP</span>
+                    <span class="data-value">84<span style="font-size: 1rem; color: var(--text-muted)">°C</span></span>
+                </div>
+                <div class="bento-item">
+                    <span class="data-label">OIL PRESS</span>
+                    <span class="data-value">4.2<span style="font-size: 1rem; color: var(--text-muted)">BAR</span></span>
+                </div>
+                <div class="cta-grid">
+                    <button class="btn-outline">Initialize Telemetry Link</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        setInterval(() => {
+            const el = document.getElementById('velocity');
+            if (el) {
+                const base = 248;
+                const variance = Math.floor(Math.random() * 15) - 7;
+                el.textContent = base + variance;
+            }
+        }, 1800);
+    </script>
+</body>
+</html>
